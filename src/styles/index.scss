@@ -50,8 +50,8 @@ body {
    image-rendering: pixelated;
    background-image: url(../images/Map.png);
    background-size: 100%;
-   width: calc(13 * var(--grid-cell));
-   height: calc(10 * var(--grid-cell));
+   width: calc(19 * var(--grid-cell));
+   height: calc(16 * var(--grid-cell));
    position: relative;
 }
 
@@ -60,6 +60,13 @@ body {
    height: calc( var(--grid-cell)* 2 );
    position: absolute;
    overflow:hidden;
+}
+
+.npc {
+   width: calc( var(--grid-cell)* 2 );
+   height: calc( var(--grid-cell)* 2 );
+   position: absolute;
+   overflow: hidden;
 }
 
 .shadow {
@@ -74,6 +81,14 @@ body {
 
 // character
 .character_spritesheet {
+   position: absolute;
+   background: url("https://assets.codepen.io/21542/DemoRpgCharacter.png") no-repeat no-repeat;
+   background-size: 100%;
+   width: calc( var(--grid-cell)* 8 );
+   height: calc( var(--grid-cell)* 8 );
+}
+
+.npc_spritesheet {
    position: absolute;
    background: url("https://assets.codepen.io/21542/DemoRpgCharacter.png") no-repeat no-repeat;
    background-size: 100%;
