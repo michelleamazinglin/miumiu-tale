@@ -2,9 +2,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     var character = document.querySelector(".character");
     var map = document.querySelector(".map");
     
-    //start in the middle of the map
-    var x = 0;
-    var y = 0;
+    //character start in the middle of the map
+    var x = 185;
+    var y = 55;
     var moving_directions = []; //State of which arrow keys we are holding down
     var speed = 1; //How fast the character moves in pixels per frame
 
@@ -40,7 +40,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     character.setAttribute("walking", moving_direction ? "true" : "false");
 
-    
+
     document.addEventListener("keydown", (e) => {
         var dir = keys[e.which];
         if (dir && moving_directions.indexOf(dir) === -1) {
@@ -61,6 +61,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     var rightLimit = 278;
     var topLimit = 37;
     var bottomLimit = 217;
+
+    
     if (x < leftLimit) { x = leftLimit; }
     if (x > rightLimit) { x = rightLimit; }
     if (y < topLimit) { y = topLimit; }
