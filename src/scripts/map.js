@@ -3,8 +3,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     var map = document.querySelector(".map");
 
     //start in the middle of the map
-    var x = 90;
-    var y = 34;
+    var x = 75;
+    var y = 35;
     var moving_directions = []; //State of which arrow keys we are holding down
     var speed = 1; //How fast the character moves in pixels per frame
 
@@ -13,7 +13,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     var pixelSize = parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
     );
-    
+    // pull from css (the pixel size)
+
     const moving_direction = moving_directions[0];
     if (moving_direction) {
         if (moving_direction === directions.right) {x += speed;}

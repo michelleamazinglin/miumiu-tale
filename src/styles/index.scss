@@ -37,6 +37,7 @@ body {
    position:relative;
 }
 
+// fixed size camera
 .camera {
    width: calc(var(--pixel-size) * 160);
    height: calc(var(--pixel-size) * 144);
@@ -47,7 +48,7 @@ body {
 
 .map {
    image-rendering: pixelated;
-   background-image: url("https://assets.codepen.io/21542/CameraDemoMap.png");
+   background-image: url(../images/Map.png);
    background-size: 100%;
    width: calc(13 * var(--grid-cell));
    height: calc(10 * var(--grid-cell));
@@ -72,7 +73,6 @@ body {
 }
 
 // character
-
 .character_spritesheet {
    position: absolute;
    background: url("https://assets.codepen.io/21542/DemoRpgCharacter.png") no-repeat no-repeat;
