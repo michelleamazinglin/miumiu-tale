@@ -1,3 +1,6 @@
+// i want a camera following the char around the map
+
+
 let ctx = null;
 
 // create a map with 10*10 tile
@@ -27,8 +30,8 @@ let gameMap = [
 let tileWidth = 40;
 let tileHeight = 40;
 // 地图大小就是10*10
-let mapW = 20;
-let mapH = 20;
+let mapWidth = 20;
+let mapHeight = 20;
 // framerate
 let currentSecond = 0;
 let frameCount = 0;
@@ -38,10 +41,15 @@ let lastFrameTime = 0;
 
 // keyCode : boolean to tell us which one are pressed
 let keysDown = {
-	37 : false,
-	38 : false,
-	39 : false,
-	40 : false
+    // 37: left
+    37 : false,
+    // 38: up
+    38 : false,
+    // 39: right
+    39 : false,
+    // 40: down
+    40 : false
+    // 32: space
 };
 
 // 创建一个角色 (miumiu)
@@ -58,7 +66,7 @@ function Character() {
 }
 
 
-// place it in a specitic tile 
+// place char in a specitic tile 
 Character.prototype.placeAt = function(x, y) {
 	this.tileFrom	= [x,y];
     this.tileTo		= [x,y];
@@ -83,21 +91,26 @@ Character.prototype.processMovement = function(t) {
 
         // if char is moving on x coordinate, calculate pixels
 		if(this.tileTo[0] != this.tileFrom[0]) {
+            // difference = distance moved
+            // depending on whether the destination tile (tileTo) is left (or above), or right (or below) the tile we are moving from (tileFrom), we subtract or add this amount to the Characters position. 
 			let difference = (tileWidth / this.delayMove) * (t - this.timeMoved);
 			this.position[0]+= (this.tileTo[0] < this.tileFrom[0] ? 0 - difference : difference);
 		}
 	    if(this.tileTo[1] != this.tileFrom[1]) {
 			let difference = (tileHeight / this.delayMove) * (t-this.timeMoved);
 			this.position[1]+= (this.tileTo[1]<this.tileFrom[1] ? 0 - difference : difference);
-		}
+        }
+        // round x & y to whole number
 		this.position[0] = Math.round(this.position[0]);
 		this.position[1] = Math.round(this.position[1]);
-	}
+    }
+    // true = char is currently moving
 	return true;
 }
 
+// convert x, y into index in gameMap arr
 function toIndex(x, y) {
-	return((y * mapW) + x);
+	return((y * mapWidth) + x);
 }
 
 
@@ -105,8 +118,9 @@ function toIndex(x, y) {
 window.onload = function() {
 	ctx = document.getElementById('game').getContext("2d");
 	requestAnimationFrame(drawGame);
-	ctx.font = "bold 10pt sans-serif";
-
+    ctx.font = "bold 10pt sans-serif";
+    
+    // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
 		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = true; }
 	});
@@ -133,21 +147,33 @@ function drawGame()
 	}
 	else { frameCount++; }
 
+    // player movement
 	if(!player.processMovement(currentFrameTime)) {
-		if(keysDown[38] && player.tileFrom[1]>0 && gameMap[toIndex(player.tileFrom[0], player.tileFrom[1]-1)]==1) { player.tileTo[1]-= 1; }
-		else if(keysDown[40] && player.tileFrom[1]<(mapH-1) && gameMap[toIndex(player.tileFrom[0], player.tileFrom[1]+1)]==1) { player.tileTo[1]+= 1; }
-		else if(keysDown[37] && player.tileFrom[0]>0 && gameMap[toIndex(player.tileFrom[0]-1, player.tileFrom[1])]==1) { player.tileTo[0]-= 1; }
-		else if(keysDown[39] && player.tileFrom[0]<(mapW-1) && gameMap[toIndex(player.tileFrom[0]+1, player.tileFrom[1])]==1) { player.tileTo[0]+= 1; }
+        // check for left right up and down directions
+        // 1. The corresponding Arrow Key is pressed
+        // 2. The destination tile is in map bounds; greater than or equal to 0, and less than map width (or map height, depending on axis). 
+        // 3. The destination tiles value in the gameMap array is 1, as we are treating tile with a value of 1 as traversable.
+        // 只有数值为一的时候我们才可以移动过去
+		if (keysDown[38] && player.tileFrom[1] > 0 && gameMap[ toIndex(player.tileFrom[0], player.tileFrom[1] - 1)] == 1) {
+            player.tileTo[1]-= 1; 
+        } else if (keysDown[40] && player.tileFrom[1] < (mapHeight-1) && gameMap[toIndex(player.tileFrom[0], player.tileFrom[1]+1)]==1) {
+            player.tileTo[1]+= 1; } else if (keysDown[37] && player.tileFrom[0]>0 && gameMap[toIndex(player.tileFrom[0] - 1, player.tileFrom[1])] == 1) { 
+                player.tileTo[0]-= 1; 
+        } else if (keysDown[39] && player.tileFrom[0]<(mapWidth-1) && gameMap[toIndex(player.tileFrom[0]+1, player.tileFrom[1])]==1) { 
+            player.tileTo[0]+= 1; 
+        }
 
-		if(player.tileFrom[0]!=player.tileTo[0] || player.tileFrom[1]!=player.tileTo[1])
-		{ player.timeMoved = currentFrameTime; }
+        // if the destination (tileTo) is now different from the current tile (tileFrom). If so, we update the player timeMoved to the currentFrameTime
+		if(player.tileFrom[0]!=player.tileTo[0] || player.tileFrom[1]!=player.tileTo[1]) { 
+            player.timeMoved = currentFrameTime; 
+        }
     }
     
     // nested loops: y and x
-	for(let y = 0; y < mapH; ++y) {
-        for(let x = 0; x < mapW; ++x) {
+	for(let y = 0; y < mapHeight; ++y) {
+        for(let x = 0; x < mapWidth; ++x) {
             // to find the index of the current tile in gamemap arr
-			switch(gameMap[( (y * mapW) + x )]) {
+			switch(gameMap[( (y * mapWidth) + x )]) {
                 // which color depending on the value in the gameMap arr
                 // 这里的0就是地图上的墙壁
 				case 0:
@@ -158,9 +184,11 @@ function drawGame()
 			}
             ctx.fillRect( x * tileWidth, y * tileHeight, tileWidth, tileHeight);
 		}
-	}
+    }
+    
+    // draw the player
 
-	ctx.fillStyle = "#0000ff";
+	ctx.fillStyle = "#fb9585";
 	ctx.fillRect(player.position[0], player.position[1],
 		player.dimensions[0], player.dimensions[1]);
 
