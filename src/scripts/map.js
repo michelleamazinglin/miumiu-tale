@@ -1,5 +1,7 @@
-var ctx = null;
-var gameMap = [
+let ctx = null;
+
+// create a map with 10*10 tile
+let gameMap = [
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
 	0, 1, 0, 0, 0, 1, 0, 0, 0, 0,
@@ -11,18 +13,19 @@ var gameMap = [
 	0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
-var tileW = 40, tileH = 40;
-var mapW = 10, mapH = 10;
-var currentSecond = 0, frameCount = 0, framesLastSecond = 0, lastFrameTime = 0;
 
-var keysDown = {
+let tileW = 40, tileH = 40;
+let mapW = 10, mapH = 10;
+let currentSecond = 0, frameCount = 0, framesLastSecond = 0, lastFrameTime = 0;
+
+let keysDown = {
 	37 : false,
 	38 : false,
 	39 : false,
 	40 : false
 };
 
-var player = new Character();
+let player = new Character();
 
 function Character()
 {
@@ -55,12 +58,12 @@ Character.prototype.processMovement = function(t)
 
 		if(this.tileTo[0] != this.tileFrom[0])
 		{
-			var diff = (tileW / this.delayMove) * (t-this.timeMoved);
+			let diff = (tileW / this.delayMove) * (t-this.timeMoved);
 			this.position[0]+= (this.tileTo[0]<this.tileFrom[0] ? 0 - diff : diff);
 		}
 		if(this.tileTo[1] != this.tileFrom[1])
 		{
-			var diff = (tileH / this.delayMove) * (t-this.timeMoved);
+			let diff = (tileH / this.delayMove) * (t-this.timeMoved);
 			this.position[1]+= (this.tileTo[1]<this.tileFrom[1] ? 0 - diff : diff);
 		}
 
@@ -94,10 +97,10 @@ function drawGame()
 {
 	if(ctx==null) { return; }
 
-	var currentFrameTime = Date.now();
-	var timeElapsed = currentFrameTime - lastFrameTime;
+	let currentFrameTime = Date.now();
+	let timeElapsed = currentFrameTime - lastFrameTime;
 
-	var sec = Math.floor(Date.now()/1000);
+	let sec = Math.floor(Date.now()/1000);
 	if(sec!=currentSecond)
 	{
 		currentSecond = sec;
@@ -117,9 +120,9 @@ function drawGame()
 		{ player.timeMoved = currentFrameTime; }
 	}
 
-	for(var y = 0; y < mapH; ++y)
+	for(let y = 0; y < mapH; ++y)
 	{
-		for(var x = 0; x < mapW; ++x)
+		for(let x = 0; x < mapW; ++x)
 		{
 			switch(gameMap[((y*mapW)+x)])
 			{
