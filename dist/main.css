@@ -1,4 +1,6 @@
-body{background-color:#ccf;color:blue;display:flex;flex-direction:column}.center{display:flex;align-items:center;justify-content:center}.card{background:white;height:50vh;width:50vw;border-radius:15px;margin-top:15px;box-shadow:3px 3px 5px 5px #009,1px 0px 1px #009}.image-card{background-image:url(images/yoda-stitch.jpg);background-position:center}h2{font-size:3rem}
+canvas {
+  border: 1px solid #d3d3d3;
+  background-color: #f1f1f1; }
 
 
-/*# sourceMappingURL=main.css.map*/
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvc3R5bGVzL2luZGV4LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBLDRCQUE0QiIsImZpbGUiOiJtYWluLmNzcyIsInNvdXJjZXNDb250ZW50IjpbImNhbnZhcyB7XG4gIGJvcmRlcjogMXB4IHNvbGlkICNkM2QzZDM7XG4gIGJhY2tncm91bmQtY29sb3I6ICNmMWYxZjE7IH1cbiJdLCJzb3VyY2VSb290IjoiIn0=*/
