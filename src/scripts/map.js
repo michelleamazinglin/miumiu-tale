@@ -2,27 +2,37 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 0, 0, 1, 1, 0, 0, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 1, 1, 1, 0, 1, 1, 0,
-	0, 1, 0, 1, 1, 1, 0, 0, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 1, 1, 0, 0, 0, 1, 0, 0,
-	0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0,
+	0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0,
+	0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
+	0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0,
+	0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+	0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+	0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
+	0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
 // 每个地砖多少pixel
-let tileWidth = 40
+let tileWidth = 40;
 let tileHeight = 40;
 // 地图大小就是10*10
-let mapW = 10
-let mapH = 10;
+let mapW = 20;
+let mapH = 20;
 // framerate
-let currentSecond = 0
-let frameCount = 0
-let framesLastSecond = 0
+let currentSecond = 0;
+let frameCount = 0;
+let framesLastSecond = 0;
 let lastFrameTime = 0;
 
 
@@ -58,23 +68,27 @@ Character.prototype.placeAt = function(x, y) {
 		(( tileHeight * y )+( (tileHeight - this.dimensions[1]) / 2 ))];
 };
 
-
+// calculations each frame to find position, pass in a time
 Character.prototype.processMovement = function(t) {
-	if(this.tileFrom[0]==this.tileTo[0] && this.tileFrom[1]==this.tileTo[1]) { return false; }
-
-	if((t-this.timeMoved)>=this.delayMove) {
+    // if char tileTo == tileFrom char is not moving, so return false
+	if( this.tileFrom[0] == this.tileTo[0] && this.tileFrom[1] == this.tileTo[1]) { return false; }
+    // if the amount of time passed since char began its current move >= the time for char to move 1 tile. we set position using placeAt function
+    // aka: if char still moving
+	if((t - this.timeMoved) >= this.delayMove) {
 		this.placeAt(this.tileTo[0], this.tileTo[1]);
 	} else {
+        // current position on canvas
 		this.position[0] = (this.tileFrom[0] * tileWidth) + ((tileWidth-this.dimensions[0])/2);
 		this.position[1] = (this.tileFrom[1] * tileHeight) + ((tileHeight-this.dimensions[1])/2);
 
+        // if char is moving on x coordinate, calculate pixels
 		if(this.tileTo[0] != this.tileFrom[0]) {
-			let diff = (tileWidth / this.delayMove) * (t-this.timeMoved);
-			this.position[0]+= (this.tileTo[0]<this.tileFrom[0] ? 0 - diff : diff);
+			let difference = (tileWidth / this.delayMove) * (t - this.timeMoved);
+			this.position[0]+= (this.tileTo[0] < this.tileFrom[0] ? 0 - difference : difference);
 		}
 	    if(this.tileTo[1] != this.tileFrom[1]) {
-			let diff = (tileHeight / this.delayMove) * (t-this.timeMoved);
-			this.position[1]+= (this.tileTo[1]<this.tileFrom[1] ? 0 - diff : diff);
+			let difference = (tileHeight / this.delayMove) * (t-this.timeMoved);
+			this.position[1]+= (this.tileTo[1]<this.tileFrom[1] ? 0 - difference : difference);
 		}
 		this.position[0] = Math.round(this.position[0]);
 		this.position[1] = Math.round(this.position[1]);
