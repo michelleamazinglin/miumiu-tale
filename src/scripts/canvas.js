@@ -26,7 +26,7 @@ let gameMap = [
 
 let tileMap = new TileMap();
 
-//定義屋頂位置資料
+//定义屋顶位置
 let roofList = [
 	{ x:5, y:3, w:4, h:7, data: [
 		10, 10, 11, 11,
@@ -54,8 +54,8 @@ let roofList = [
 	]}
 ];
 
-let tileWidth = 40,tileHeight = 40; //定義物件尺寸(40px x 40px)
-let mapWidth = 20,mapHeight = 20; //定義物地圖總格數
+let tileWidth = 40,tileHeight = 40; //定义每个方块尺寸
+let mapWidth = 20,mapHeight = 20; //定义地图大小 （看上面的array）
 let currentSecond = 0,frameCount = 0,framesLastSecond = 0,lastFrameTime = 0;
 
 //宣告圖資雪碧圖
