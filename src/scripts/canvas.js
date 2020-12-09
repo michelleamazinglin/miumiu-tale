@@ -485,8 +485,6 @@ function Character() {
   this.sprites[directions.down] = new Sprite([{ x: 0, y: 180, w: 30, h: 30 }]);
   this.sprites[directions.left] = new Sprite([{ x: 0, y: 210, w: 30, h: 30 }]);
 
-  //存進資料庫
-  this.inventory = new Inventory(3);
 }
 
 Character.prototype.placeAt = function(x, y) {
