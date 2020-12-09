@@ -52,6 +52,8 @@ let keysDown = {
     // 32: space
 };
 
+
+
 // 创建一个角色 (miumiu)
 let player = new Character();
 // in class so we can add more char in future
@@ -108,11 +110,48 @@ Character.prototype.processMovement = function(t) {
 	return true;
 }
 
+
+// create a camera object
+let viewport = {
+    // canvas width and height
+    screen: [0,0],
+    // tile coordinates of the top-left area of the map
+    startTile: [0,0],
+    // tile coordinates of the bottom-right area of the map
+    endTile: [0,0],
+    // offset in pixels
+    offset: [0,0],
+    // update function, x y is our center area
+    update: function(offsetX, offsetY) {
+        // offset: half the canvas width || height (round down to whole num)
+		this.offset[0] = Math.floor((this.screen[0]/2) - offsetX);
+        this.offset[1] = Math.floor((this.screen[1]/2) - offsetY);
+
+        // we find the coordinates of the tile
+        let tile = [ Math.floor(offsetX / tileWidth), Math.floor(offsetY / tileHeight) ];
+        //  calculate the position of the first tile on the x axis by calculting the maximum number of tiles that can fit in half of the screen width, and taking that number away from the centre tile.
+        //  remove an additional 1 to allow for tiles that are not completely on the screen, but only partially.
+        this.startTile[0] = tile[0] - 1 - Math.ceil((this.screen[0]/2) / tileWidth);
+		this.startTile[1] = tile[1] - 1 - Math.ceil((this.screen[1]/2) / tileHeight);
+
+        // check to make sure x or y is not less then 0 (ourside the bounds)
+        if(this.startTile[0] < 0) { this.startTile[0] = 0; }
+		if(this.startTile[1] < 0) { this.startTile[1] = 0; }
+
+        this.endTile[0] = tile[0] + 1 + Math.ceil((this.screen[0]/2) / tileWidth);
+		this.endTile[1] = tile[1] + 1 + Math.ceil((this.screen[1]/2) / tileHeight);
+
+		if(this.endTile[0] >= mapWidth) { this.endTile[0] = mapWidth -1; }
+		if(this.endTile[1] >= mapHeight) { this.endTile[1] = mapHeight - 1; }
+        }
+};
+
+
+
 // convert x, y into index in gameMap arr
 function toIndex(x, y) {
 	return((y * mapWidth) + x);
 }
-
 
 // loop starts when page done loading
 window.onload = function() {
@@ -126,7 +165,11 @@ window.onload = function() {
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = false; }
-	});
+    });
+
+    // checks the Canvas dimensions and stores it in the viewport objects
+    viewport.screen = [document.getElementById('game').width,
+		document.getElementById('game').height];
 };
 
 
@@ -167,11 +210,20 @@ function drawGame()
 		if(player.tileFrom[0]!=player.tileTo[0] || player.tileFrom[1]!=player.tileTo[1]) { 
             player.timeMoved = currentFrameTime; 
         }
+
+        // set the viewport centre to the player top/left position plus half the players width/height.
+        viewport.update(player.position[0] + (player.dimensions[0]/2),
+        player.position[1] + (player.dimensions[1]/2));
+        // erase anything on the Canvas from the last frame
+        ctx.fillStyle = "#000000";
+        ctx.fillRect(0, 0, viewport.screen[0], viewport.screen[1]);
+        
+        
     }
     
     // nested loops: y and x
-	for(let y = 0; y < mapHeight; ++y) {
-        for(let x = 0; x < mapWidth; ++x) {
+		for(let y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y) {
+		    for(let x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x) {
             // to find the index of the current tile in gamemap arr
 			switch(gameMap[( (y * mapWidth) + x )]) {
                 // which color depending on the value in the gameMap arr
@@ -182,7 +234,8 @@ function drawGame()
 				default:
 					ctx.fillStyle = "#6dF7b1";
 			}
-            ctx.fillRect( x * tileWidth, y * tileHeight, tileWidth, tileHeight);
+            ctx.fillRect( viewport.offset[0] + (x * tileWidth ), viewport.offset[1] + (y * tileHeight),
+			    tileWidth, tileHeight);
 		}
     }
     
