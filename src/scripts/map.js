@@ -1,16 +1,16 @@
 window.addEventListener('DOMContentLoaded', (event) => {
-    var character = document.querySelector(".character");
-    var map = document.querySelector(".map");
+    let character = document.querySelector(".character");
+    let map = document.querySelector(".map");
     
     //character start in the middle of the map
-    var x = 185;
-    var y = 55;
-    var moving_directions = []; //State of which arrow keys we are holding down
-    var speed = 1; //How fast the character moves in pixels per frame
+    let x = 185;
+    let y = 55;
+    let moving_directions = []; //State of which arrow keys we are holding down
+    let speed = 1; //How fast the character moves in pixels per frame
 
     const placeCharacter = () => {
     
-    var pixelSize = parseInt(
+    let pixelSize = parseInt(
         getComputedStyle(document.documentElement).getPropertyValue('--pixel-size')
     );
     // pull from css (the pixel size)
@@ -42,25 +42,25 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 
     document.addEventListener("keydown", (e) => {
-        var dir = keys[e.which];
+        let dir = keys[e.which];
         if (dir && moving_directions.indexOf(dir) === -1) {
             moving_directions.unshift(dir)
     }
     })
 
     document.addEventListener("keyup", (e) => {
-        var dir = keys[e.which];
-        var index = moving_directions.indexOf(dir);
+        let dir = keys[e.which];
+        let index = moving_directions.indexOf(dir);
         if (index > -1) {
             moving_directions.splice(index, 1)
     }
     });
     
     //Limits (gives the illusion of walls)
-    var leftLimit = -5;
-    var rightLimit = 278;
-    var topLimit = 37;
-    var bottomLimit = 217;
+    let leftLimit = -5;
+    let rightLimit = 278;
+    let topLimit = 37;
+    let bottomLimit = 217;
 
     
     if (x < leftLimit) { x = leftLimit; }
@@ -69,8 +69,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     if (y > bottomLimit) { y = bottomLimit; }
     
     
-    var camera_left = pixelSize * 66;
-    var camera_top = pixelSize * 42;
+    let camera_left = pixelSize * 66;
+    let camera_top = pixelSize * 42;
     
     map.style.transform = `translate3d( ${-x*pixelSize+camera_left}px, ${-y*pixelSize+camera_top}px, 0 )`;
     character.style.transform = `translate3d( ${x*pixelSize}px, ${y*pixelSize}px, 0 )`;  
