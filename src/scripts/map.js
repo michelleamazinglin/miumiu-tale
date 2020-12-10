@@ -63,13 +63,15 @@ let floorTypes = {
 // 数字（gameMap）对应上颜色和地板种类
 // 0:墙壁 1:草地 2:陆地 3:房子 4: 水
 let tileTypes = {
-	0 : { colour: "#793d4c", floor: floorTypes.solid },
-	1 : { colour: "#6df7b1", floor: floorTypes.path },
-	2 : { colour: "#c97461", floor: floorTypes.path	},
-	3 : { colour: "#d77c4b", floor: floorTypes.solid },
-	4 : { colour: "#008df0", floor: floorTypes.water }
+	0 : { colour:"#685b48", floor:floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}]	},
+	1 : { colour:"#5aa457", floor:floorTypes.path,	sprite:[{x:40,y:0,w:40,h:40}]	},
+	2 : { colour:"#e8bd7a", floor:floorTypes.path,	sprite:[{x:80,y:0,w:40,h:40}]	},
+	3 : { colour:"#286625", floor:floorTypes.solid,	sprite:[{x:120,y:0,w:40,h:40}]	},
+	4 : { colour:"#678fd9", floor:floorTypes.water,	sprite:[{x:160,y:0,w:40,h:40}]	}
 };
 
+
+let tileset = null, tilesetURL = "src/images/tilesetestt.png", tilesetLoaded = false;
 
 
 // 创建一个角色 (miumiu)
