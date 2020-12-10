@@ -63,13 +63,19 @@ let floorTypes = {
 // 数字（gameMap）对应上颜色和地板种类
 // 0:墙壁 1:草地 2:陆地 3:房子 4: 水
 let tileTypes = {
-	0 : { colour:"#685b48", floor:floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}]	},
-	1 : { colour:"#5aa457", floor:floorTypes.path,	sprite:[{x:40,y:0,w:40,h:40}]	},
-	2 : { colour:"#e8bd7a", floor:floorTypes.path,	sprite:[{x:80,y:0,w:40,h:40}]	},
-	3 : { colour:"#286625", floor:floorTypes.solid,	sprite:[{x:120,y:0,w:40,h:40}]	},
-	4 : { colour:"#678fd9", floor:floorTypes.water,	sprite:[{x:160,y:0,w:40,h:40}]	}
+	0 : { colour: "#793d4c", floor: floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}] },
+	1 : { colour: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
+	2 : { colour: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
+	3 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
+	4 : { colour: "#008df0", floor: floorTypes.water, sprite:[{x:160,y:0,w:40,h:40}] }
 };
 
+let directions = {
+	up	: 0,
+	right: 1,
+	down: 2,
+	left: 3
+};
 
 let tileset = null, tilesetURL = "src/images/tilesetestt.png", tilesetLoaded = false;
 
@@ -84,7 +90,14 @@ function Character() {
     this.timeMoved	= 0;
     this.delayMove	= 700;
 	this.dimensions	= [30,30];
-	this.position	= [45,45];
+    this.position	= [45,45];
+    
+    this.direction	= directions.up;
+	this.sprites = {};
+	this.sprites[directions.up]		= [{x:0,y:120,w:30,h:30}];
+	this.sprites[directions.right]	= [{x:0,y:150,w:30,h:30}];
+	this.sprites[directions.down]	= [{x:0,y:180,w:30,h:30}];
+	this.sprites[directions.left]	= [{x:0,y:210,w:30,h:30}];
 }
 
 
@@ -176,16 +189,15 @@ Character.prototype.canMoveTo = function(x, y)
 	if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
 	return true;
 };
-Character.prototype.canMoveUp		= function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]-1); };
-Character.prototype.canMoveDown 	= function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]+1); };
-Character.prototype.canMoveLeft 	= function() { return this.canMoveTo(this.tileFrom[0]-1, this.tileFrom[1]); };
-Character.prototype.canMoveRight 	= function() { return this.canMoveTo(this.tileFrom[0]+1, this.tileFrom[1]); };
+Character.prototype.canMoveUp = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]-1); };
+Character.prototype.canMoveDown = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]+1); };
+Character.prototype.canMoveLeft = function() { return this.canMoveTo(this.tileFrom[0]-1, this.tileFrom[1]); };
+Character.prototype.canMoveRight = function() { return this.canMoveTo(this.tileFrom[0]+1, this.tileFrom[1]); };
 
-Character.prototype.moveLeft	= function(t) { this.tileTo[0]-=1; this.timeMoved = t; };
-Character.prototype.moveRight	= function(t) { this.tileTo[0]+=1; this.timeMoved = t; };
-Character.prototype.moveUp	= function(t) { this.tileTo[1]-=1; this.timeMoved = t; };
-Character.prototype.moveDown	= function(t) { this.tileTo[1]+=1; this.timeMoved = t; };
-
+Character.prototype.moveLeft = function(t) { this.tileTo[0]-= 1; this.timeMoved = t; this.direction = directions.left; };
+Character.prototype.moveRight = function(t) { this.tileTo[0]+= 1; this.timeMoved = t; this.direction = directions.right; };
+Character.prototype.moveUp = function(t) { this.tileTo[1]-= 1; this.timeMoved = t; this.direction = directions.up; };
+Character.prototype.moveDown = function(t) { this.tileTo[1]+= 1; this.timeMoved = t; this.direction = directions.down; };
 
 
 
@@ -210,14 +222,24 @@ window.onload = function() {
 
     // checks the Canvas dimensions and stores it in the viewport objects
     viewport.screen = [document.getElementById('game').width,
-		document.getElementById('game').height];
+        document.getElementById('game').height];
+        
+    tileset = new Image();
+	tileset.onerror = function()
+	{
+		ctx = null;
+		alert("Failed loading tileset.");
+	};
+	tileset.onload = function() { tilesetLoaded = true; };
+	tileset.src = tilesetURL;
 };
 
 
 // main function
 function drawGame()
 {
-	if(ctx==null) { return; }
+    if(ctx==null) { return; }
+    if(!tilesetLoaded) { requestAnimationFrame(drawGame); return; }
 
 	let currentFrameTime = Date.now();
     let timeElapsed = currentFrameTime - lastFrameTime;
@@ -249,17 +271,21 @@ function drawGame()
     // nested loops: y and x
 		for(let y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y) {
 		    for(let x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x) {
-            ctx.fillStyle = tileTypes[gameMap[toIndex(x,y)]].colour;
-
-            ctx.fillRect( viewport.offset[0] + (x * tileWidth ), viewport.offset[1] + (y * tileHeight),
-			    tileWidth, tileHeight);
+                let tile = tileTypes[gameMap[toIndex(x,y)]];
+			    ctx.drawImage(tileset,
+				tile.sprite[0].x, tile.sprite[0].y, tile.sprite[0].w, tile.sprite[0].h,
+				viewport.offset[0] + (x * tileWidth), viewport.offset[1] + (y * tileHeight),
+				tileWidth, tileHeight);
 		}
     }
+
+
     
     // draw the player
-
-	ctx.fillStyle = "#fb9585";
-	ctx.fillRect(viewport.offset[0] + player.position[0], viewport.offset[1] + player.position[1],
+    let sprite = player.sprites[player.direction];
+	ctx.drawImage(tileset,
+		sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h,
+		viewport.offset[0] + player.position[0], viewport.offset[1] + player.position[1],
 		player.dimensions[0], player.dimensions[1]);
 
 
