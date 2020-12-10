@@ -5,25 +5,25 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0,
-	0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0,
-	0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
-	0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0,
-	0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-	0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
-	0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
-	0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0,
-	0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0,
-	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 2, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0,
+	0, 2, 3, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 0,
+	0, 2, 3, 1, 4, 4, 1, 1, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 0,
+	0, 2, 3, 1, 1, 4, 4, 1, 2, 3, 3, 2, 1, 1, 2, 1, 0, 0, 0, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0,
+	0, 1, 1, 1, 1, 2, 4, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0,
+	0, 1, 1, 1, 1, 2, 4, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 0,
+	0, 1, 1, 1, 1, 2, 4, 4, 4, 4, 4, 1, 1, 1, 2, 2, 2, 2, 1, 0,
+	0, 1, 1, 1, 1, 2, 3, 2, 1, 1, 4, 1, 1, 1, 1, 3, 3, 2, 1, 0,
+	0, 1, 2, 2, 2, 2, 1, 2, 1, 1, 4, 1, 1, 1, 1, 1, 3, 2, 1, 0,
+	0, 1, 2, 3, 3, 2, 1, 2, 1, 1, 4, 4, 4, 4, 4, 4, 4, 2, 4, 4,
+	0, 1, 2, 3, 3, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 0,
+	0, 1, 2, 3, 4, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 1, 2, 1, 0,
+	0, 3, 2, 3, 4, 4, 1, 2, 2, 2, 2, 2, 2, 2, 1, 0, 1, 2, 1, 0,
+	0, 3, 2, 3, 4, 4, 3, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 3, 0,
+	0, 3, 2, 3, 4, 1, 3, 2, 1, 3, 1, 1, 1, 2, 1, 1, 1, 2, 3, 0,
+	0, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 1, 1, 2, 2, 2, 2, 2, 3, 0,
+	0, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 4, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
 // 每个地砖多少pixel
@@ -50,6 +50,24 @@ let keysDown = {
     // 40: down
     40 : false
     // 32: space
+};
+
+
+// 地板种类
+let floorTypes = {
+    solid: 0,
+    path: 1,
+    water: 2
+};
+
+// 数字（gameMap）对应上颜色和地板种类
+// 0:墙壁 1:草地 2:陆地 3:房子 4: 水
+let tileTypes = {
+	0 : { colour: "#793d4c", floor: floorTypes.solid },
+	1 : { colour: "#6df7b1", floor: floorTypes.path },
+	2 : { colour: "#c97461", floor: floorTypes.path	},
+	3 : { colour: "#d77c4b", floor: floorTypes.solid },
+	4 : { colour: "#008df0", floor: floorTypes.water }
 };
 
 
@@ -147,6 +165,27 @@ let viewport = {
 };
 
 
+// if char can move in a specific direc
+Character.prototype.canMoveTo = function(x, y)
+{
+    // if x and y is in map bound
+    if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
+    // if the tile is path tile (only move if its a path)
+	if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
+	return true;
+};
+Character.prototype.canMoveUp		= function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]-1); };
+Character.prototype.canMoveDown 	= function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]+1); };
+Character.prototype.canMoveLeft 	= function() { return this.canMoveTo(this.tileFrom[0]-1, this.tileFrom[1]); };
+Character.prototype.canMoveRight 	= function() { return this.canMoveTo(this.tileFrom[0]+1, this.tileFrom[1]); };
+
+Character.prototype.moveLeft	= function(t) { this.tileTo[0]-=1; this.timeMoved = t; };
+Character.prototype.moveRight	= function(t) { this.tileTo[0]+=1; this.timeMoved = t; };
+Character.prototype.moveUp	= function(t) { this.tileTo[1]-=1; this.timeMoved = t; };
+Character.prototype.moveDown	= function(t) { this.tileTo[1]+=1; this.timeMoved = t; };
+
+
+
 
 // convert x, y into index in gameMap arr
 function toIndex(x, y) {
@@ -192,48 +231,24 @@ function drawGame()
 
     // player movement
 	if(!player.processMovement(currentFrameTime)) {
-        // check for left right up and down directions
-        // 1. The corresponding Arrow Key is pressed
-        // 2. The destination tile is in map bounds; greater than or equal to 0, and less than map width (or map height, depending on axis). 
-        // 3. The destination tiles value in the gameMap array is 1, as we are treating tile with a value of 1 as traversable.
-        // 只有数值为一的时候我们才可以移动过去
-		if (keysDown[38] && player.tileFrom[1] > 0 && gameMap[ toIndex(player.tileFrom[0], player.tileFrom[1] - 1)] == 1) {
-            player.tileTo[1]-= 1; 
-        } else if (keysDown[40] && player.tileFrom[1] < (mapHeight-1) && gameMap[toIndex(player.tileFrom[0], player.tileFrom[1]+1)]==1) {
-            player.tileTo[1]+= 1; } else if (keysDown[37] && player.tileFrom[0]>0 && gameMap[toIndex(player.tileFrom[0] - 1, player.tileFrom[1])] == 1) { 
-                player.tileTo[0]-= 1; 
-        } else if (keysDown[39] && player.tileFrom[0]<(mapWidth-1) && gameMap[toIndex(player.tileFrom[0]+1, player.tileFrom[1])]==1) { 
-            player.tileTo[0]+= 1; 
-        }
+		if(keysDown[38] && player.canMoveUp())		{ player.moveUp(currentFrameTime); }
+		else if(keysDown[40] && player.canMoveDown())	{ player.moveDown(currentFrameTime); }
+		else if(keysDown[37] && player.canMoveLeft())	{ player.moveLeft(currentFrameTime); }
+		else if(keysDown[39] && player.canMoveRight())	{ player.moveRight(currentFrameTime); }
+    }
 
-        // if the destination (tileTo) is now different from the current tile (tileFrom). If so, we update the player timeMoved to the currentFrameTime
-		if(player.tileFrom[0]!=player.tileTo[0] || player.tileFrom[1]!=player.tileTo[1]) { 
-            player.timeMoved = currentFrameTime; 
-        }
-
-        // set the viewport centre to the player top/left position plus half the players width/height.
+    // set the viewport centre to the player top/left position plus half the players width/height.
         viewport.update(player.position[0] + (player.dimensions[0]/2),
-        player.position[1] + (player.dimensions[1]/2));
+            player.position[1] + (player.dimensions[1]/2));
         // erase anything on the Canvas from the last frame
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, viewport.screen[0], viewport.screen[1]);
-        
-        
-    }
     
     // nested loops: y and x
 		for(let y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y) {
 		    for(let x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x) {
-            // to find the index of the current tile in gamemap arr
-			switch(gameMap[( (y * mapWidth) + x )]) {
-                // which color depending on the value in the gameMap arr
-                // 这里的0就是地图上的墙壁
-				case 0:
-					ctx.fillStyle = "#008dF0";
-					break;
-				default:
-					ctx.fillStyle = "#6dF7b1";
-			}
+            ctx.fillStyle = tileTypes[gameMap[toIndex(x,y)]].colour;
+
             ctx.fillRect( viewport.offset[0] + (x * tileWidth ), viewport.offset[1] + (y * tileHeight),
 			    tileWidth, tileHeight);
 		}
@@ -242,7 +257,7 @@ function drawGame()
     // draw the player
 
 	ctx.fillStyle = "#fb9585";
-	ctx.fillRect(player.position[0], player.position[1],
+	ctx.fillRect(viewport.offset[0] + player.position[0], viewport.offset[1] + player.position[1],
 		player.dimensions[0], player.dimensions[1]);
 
 
