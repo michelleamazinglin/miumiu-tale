@@ -40,7 +40,7 @@ let lastFrameTime = 0;
 
 
 // keyCode : boolean to tell us which one are pressed
-let keysDown = {
+let heldKeys = {
     // 37: left
     37 : false,
     // 38: up
@@ -50,6 +50,13 @@ let keysDown = {
     // 40: down
     40 : false
     // 32: space
+};
+
+let directions = {
+	up	: 0,
+	right: 1,
+	down: 2,
+	left: 3
 };
 
 
@@ -95,12 +102,7 @@ let itemTypes = {
 	}
 };
 
-let directions = {
-	up	: 0,
-	right: 1,
-	down: 2,
-	left: 3
-};
+
 
 let tileset = null, tilesetURL = "src/images/tilesetestt.png", tilesetLoaded = false;
 
@@ -108,7 +110,7 @@ let tileset = null, tilesetURL = "src/images/tilesetestt.png", tilesetLoaded = f
 
 // 创建一个角色 (miumiu)
 let player = new Character();
-// in class so we can add more char in future
+// 加更多角色⬇
 function Character() {
 	this.tileFrom	= [1,1];
     this.tileTo		= [10,10];
@@ -127,8 +129,8 @@ function Character() {
 }
 
 
-// place char in a specitic tile 
-Character.prototype.placeAt = function(x, y) {
+// 把角色放在地砖上
+Character.prototype.location = function(x, y) {
 	this.tileFrom	= [x,y];
     this.tileTo		= [x,y];
     // x and y position of the tile. update the tileFrom and tileTo properties to the new tile coordinates
@@ -141,10 +143,10 @@ Character.prototype.placeAt = function(x, y) {
 Character.prototype.processMovement = function(t) {
     // if char tileTo == tileFrom char is not moving, so return false
 	if( this.tileFrom[0] == this.tileTo[0] && this.tileFrom[1] == this.tileTo[1]) { return false; }
-    // if the amount of time passed since char began its current move >= the time for char to move 1 tile. we set position using placeAt function
+    // if the amount of time passed since char began its current move >= the time for char to move 1 tile. we set position using location function
     // aka: if char still moving
 	if((t - this.timeMoved) >= this.delayMove) {
-        this.placeAt(this.tileTo[0], this.tileTo[1]);
+        this.location(this.tileTo[0], this.tileTo[1]);
         if(mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter!=null)
 		{
 			mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter(this);
@@ -312,7 +314,7 @@ TileMap.prototype.addRoofs = function(roofs)
 		{
 			for(let x = 0; x < r.w; x++)
 			{
-                let tileIdx = (((r.y+y)*this.w)+r.x+x);
+                let tileIdx = (((r.y + y)*this.w)+r.x + x);
                 this.map[tileIdx].roof = r;
 				this.map[tileIdx].roofType = r.data[((y*r.w)+x)];
 			}
@@ -345,10 +347,10 @@ window.onload = function() {
     
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
-		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = true; }
+		if(e.keyCode>=37 && e.keyCode<=40) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
-		if(e.keyCode>=37 && e.keyCode<=40) { keysDown[e.keyCode] = false; }
+		if(e.keyCode>=37 && e.keyCode<=40) { heldKeys[e.keyCode] = false; }
     });
 
     // checks the Canvas dimensions and stores it in the viewport objects
@@ -391,10 +393,10 @@ function drawGame()
 
     // player movement
 	if(!player.processMovement(currentFrameTime)) {
-		if(keysDown[38] && player.canMoveUp())		{ player.moveUp(currentFrameTime); }
-		else if(keysDown[40] && player.canMoveDown())	{ player.moveDown(currentFrameTime); }
-		else if(keysDown[37] && player.canMoveLeft())	{ player.moveLeft(currentFrameTime); }
-		else if(keysDown[39] && player.canMoveRight())	{ player.moveRight(currentFrameTime); }
+		if(heldKeys[38] && player.canMoveUp())		{ player.moveUp(currentFrameTime); }
+		else if(heldKeys[40] && player.canMoveDown())	{ player.moveDown(currentFrameTime); }
+		else if(heldKeys[37] && player.canMoveLeft())	{ player.moveLeft(currentFrameTime); }
+		else if(heldKeys[39] && player.canMoveRight())	{ player.moveRight(currentFrameTime); }
     }
 
     // set the viewport centre to the player top/left position plus half the players width/height.
