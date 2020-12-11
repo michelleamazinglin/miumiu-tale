@@ -5,18 +5,18 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0,
-	0, 1, 1, 1, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 3, 2, 3, 3, 1, 3, 3, 3, 3, 2, 3, 2, 2, 2, 0,
+	0, 0, 0, 0, 0, 6, 5, 5, 7, 0, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
+	0, 1, 1, 1, 1, 16, 20, 16, 18, 1, 5, 5, 5, 5, 2, 5, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 0,
-    0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 0,
+    0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 5, 5, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
@@ -68,13 +68,16 @@ let floorTypes = {
 };
 
 // 数字（gameMap）对应上颜色和地板种类
-// 0:墙壁 1:草地 2:陆地 3:房子 4: 水
+// 0:墙壁 1:草地 2:陆地 5:内部墙壁 4: 水 6: 内部墙壁左角 7:内部墙壁右角
+// 20:内部地板 21:内部墙左 22:内部墙右
 let tileTypes = {
 	0 : { colour: "#793d4c", floor: floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}] },
 	1 : { colour: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
 	2 : { colour: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
-	3 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
     4 : { colour: "#008df0", floor: floorTypes.ocean, sprite:[{x:160,y:0,w:40,h:40}] },
+    5 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
+    6 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:40,w:40,h:40}] },
+    7 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:40,w:40,h:40}] },
     10 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:40,w:40,h:40}]},
     11 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:40,w:40,h:40}]},
     12 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:40,w:40,h:40}]},
@@ -83,7 +86,10 @@ let tileTypes = {
     15 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:80,w:40,h:40}]},
     16 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:120,w:40,h:40}]},
     17 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:120,w:40,h:40}]},
-    18 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:120,w:40,h:40}]}
+    18 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:120,w:40,h:40}]},
+    20 : { colour: "#d77c4b", floor: floorTypes.path, sprite:[{x:40,y:40,w:40,h:40}]},
+    21 : { colour: "#d77c4b", floor: floorTypes.path, sprite:[{x:80,y:80,w:40,h:40}]},
+    22 : { colour: "#d77c4b", floor: floorTypes.path, sprite:[{x:120,y:80,w:40,h:40}]}
 };
 
 let collisions = {
@@ -151,7 +157,7 @@ let miumiu = new MiuMiu();
 function MiuMiu() {
     this.tileFrom	= [1,1];
     // miumiu的位置
-    this.tileTo		= [6,6];
+    this.tileTo		= [6,3];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
@@ -500,36 +506,30 @@ function drawGame()
 				camera.offset[0] + (x * tileWidth), camera.offset[1] + (y * tileHeight),
                 tileWidth, tileHeight);
                 }
-            let o = mapTileData.map[toIndex(x,y)].object;
-			if(o!=null && objectTypes[o.type].zIndex==z)
+            let object = mapTileData.map[toIndex(x,y)].object;
+			if(object!=null && objectTypes[object.type].zIndex==z)
 			{
-				let ot = objectTypes[o.type];
+				let objectType = objectTypes[object.type];
 				 
 				ctx.drawImage(gametile,
-					ot.sprite[0].x, ot.sprite[0].y,
-					ot.sprite[0].w, ot.sprite[0].h,
-					camera.offset[0] + (x*tileWidth) + ot.offset[0],
-					camera.offset[1] + (y*tileHeight) + ot.offset[1],
-					ot.sprite[0].w, ot.sprite[0].h);
+					objectType.sprite[0].x, objectType.sprite[0].y,
+					objectType.sprite[0].w, objectType.sprite[0].h,
+					camera.offset[0] + (x * tileWidth) + objectType.offset[0],
+					camera.offset[1] + (y * tileHeight) + objectType.offset[1],
+					objectType.sprite[0].w, objectType.sprite[0].h);
 			}
 
                if(z == 2 && mapTileData.map[toIndex(x,y)].buildingType!=0 &&
 				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding1 &&
 				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding2) {
                     tile = tileTypes[mapTileData.map[toIndex(x,y)].buildingType];
-                    sprite = getFrame(tile.sprite, tile.spritetimeLast,
-                        tile.animation);
-                    ctx.drawImage(gametile,
-                        sprite.x, sprite.y, sprite.w, sprite.h,
-                        camera.offset[0] + (x * tileWidth),
-                        camera.offset[1] + (y * tileHeight),
-                        tileWidth, tileHeight);
+                    sprite = getFrame(tile.sprite, tile.spritetimeLast, tile.animation);
+                    ctx.drawImage(gametile, sprite.x, sprite.y, sprite.w, sprite.h, camera.offset[0] + (x * tileWidth), camera.offset[1] + (y * tileHeight), tileWidth, tileHeight);
 			}
 		}
     }
 
-    if(z==1)
-		{
+    if (z == 1) {
 			let sprite = miumiu.sprites[miumiu.direction];
 			ctx.drawImage(gametile,
 				sprite[0].x, sprite[0].y,
