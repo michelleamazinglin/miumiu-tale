@@ -1,4 +1,5 @@
 # MiuMiu Tale
+[MiuMiu Tale Live](https://michelleamazinglin.github.io/miumiu-tale/)
 
 ## BACKGROUND ###
 
@@ -10,6 +11,7 @@ users will be able to:
 1. control miumiu to walk around the map using arrow keys
 2. not showing the whole map, but a camera following the player (player in the middle)
 3. can enter building to see what is inside
+4. add objects into map (solid ones and non solid ones)
 
 Bonus:
 1. items on floor which miumiu can pick up
@@ -40,13 +42,10 @@ Bonus:
 
 **DAY 2**
 > * a charactor that can move around
-> * 
 
 **DAY 3**
-> * character talk to NPC
-> * able to collect items
-> * count items collected
+> * camera follows character
 
 **DAY 4**
-> * bag system shows items collected
-> * hand it to NPC in exchange for other items
+> * rendering houses
+> * character can walk into houses
