@@ -2,18 +2,18 @@
 
 ## BACKGROUND ###
 
-MiuMiu Tale take place in a town where MiuMiu tries to help out other villagers in exchange for things MiuMiu needs in daily life.
+MiuMiu Tale take place in a fantasy world where MiuMiu lives.
 
 ## FUNCTIONALITY AND MVP ###
 
 users will be able to:
 1. control miumiu to walk around the map using arrow keys
-2. talk to villagers and get tasks
-3. find items around the map and bring back to villagers
+2. not showing the whole map, but a camera following the player (player in the middle)
+3. can enter building to see what is inside
 
 Bonus:
-1. a room for MiuMiu
-2. can customized outfit and home decor
+1. items on floor which miumiu can pick up
+2. bag to keep track of things miumiu pick up
 
 
 ## WIREFRAME ###
@@ -36,12 +36,11 @@ Bonus:
 
 **DAY 1**
 > * create a map
-> * NPC stay in one position on map
-> * camera follow the character
+> * tile art and setup tile type
 
 **DAY 2**
-> * character move around the map with animation
-> * character sprite sheet animation
+> * a charactor that can move around
+> * 
 
 **DAY 3**
 > * character talk to NPC
