@@ -13,10 +13,10 @@ let gameMap = [
 	0, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-    0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 0,
+    0, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
@@ -67,7 +67,25 @@ let tileTypes = {
 	1 : { colour: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
 	2 : { colour: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
 	3 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
-	4 : { colour: "#008df0", floor: floorTypes.water, sprite:[{x:160,y:0,w:40,h:40}] }
+    4 : { colour: "#008df0", floor: floorTypes.water, sprite:[{x:160,y:0,w:40,h:40}] },
+    10 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:40,y:120,w:40,h:40}]},
+	11 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:80,y:120,w:40,h:40}]}
+};
+
+// 物品
+let itemTypes = {
+    1 : {
+		name : "coconut",
+		maxStack : 5,
+		sprite : [{x:240,y:0,w:40,h:40}],
+		offset : [0,0]
+    },
+    2 : {
+		name : "strawberry",
+		maxStack : 5,
+		sprite : [{x:280,y:0,w:40,h:40}],
+		offset : [0,0]
+	}
 };
 
 let directions = {
@@ -80,16 +98,17 @@ let directions = {
 let tileset = null, tilesetURL = "src/images/tilesetestt.png", tilesetLoaded = false;
 
 
+
 // 创建一个角色 (miumiu)
 let player = new Character();
 // in class so we can add more char in future
 function Character() {
 	this.tileFrom	= [1,1];
-    this.tileTo		= [1,1];
+    this.tileTo		= [10,10];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
-	this.dimensions	= [30,30];
+	this.dimensions	= [40,40];
     this.position	= [45,45];
     
     this.direction	= directions.up;
@@ -118,7 +137,11 @@ Character.prototype.processMovement = function(t) {
     // if the amount of time passed since char began its current move >= the time for char to move 1 tile. we set position using placeAt function
     // aka: if char still moving
 	if((t - this.timeMoved) >= this.delayMove) {
-		this.placeAt(this.tileTo[0], this.tileTo[1]);
+        this.placeAt(this.tileTo[0], this.tileTo[1]);
+        if(mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter!=null)
+		{
+			mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter(this);
+        }
 	} else {
         // current position on canvas
 		this.position[0] = (this.tileFrom[0] * tileWidth) + ((tileWidth-this.dimensions[0])/2);
@@ -142,6 +165,27 @@ Character.prototype.processMovement = function(t) {
     // true = char is currently moving
 	return true;
 }
+
+
+// if char can move in a specific direc
+Character.prototype.canMoveTo = function(x, y)
+{
+    // if x and y is in map bound
+    if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
+    // if the tile is path tile (only move if its a path)
+		if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
+	return true;
+};
+Character.prototype.canMoveUp = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]-1); };
+Character.prototype.canMoveDown = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]+1); };
+Character.prototype.canMoveLeft = function() { return this.canMoveTo(this.tileFrom[0]-1, this.tileFrom[1]); };
+Character.prototype.canMoveRight = function() { return this.canMoveTo(this.tileFrom[0]+1, this.tileFrom[1]); };
+
+Character.prototype.moveLeft = function(t) { this.tileTo[0]-= 1; this.timeMoved = t; this.direction = directions.left; };
+Character.prototype.moveRight = function(t) { this.tileTo[0]+= 1; this.timeMoved = t; this.direction = directions.right; };
+Character.prototype.moveUp = function(t) { this.tileTo[1]-= 1; this.timeMoved = t; this.direction = directions.up; };
+Character.prototype.moveDown = function(t) { this.tileTo[1]+= 1; this.timeMoved = t; this.direction = directions.down; };
+
 
 
 // create a camera object
@@ -180,30 +224,110 @@ let viewport = {
 };
 
 
-// if char can move in a specific direc
-Character.prototype.canMoveTo = function(x, y)
+// rooftop
+
+let mapTileData = new TileMap();
+let roofList = [
+	{ x:5, y:0, w:4, h:5, data: [
+		10, 10, 11, 11,
+		10, 10, 11, 11,
+		10, 10, 11, 11,
+		10, 10, 11, 11,
+		10, 10, 11, 11
+	]},
+	{ x:9, y:0, w:6, h:5, data: [
+		10, 10, 10, 11, 11, 11,
+        10, 10, 10, 11, 11, 11,
+        10, 10, 10, 11, 11, 11,
+        10, 10, 10, 11, 11, 11,
+        10, 10, 10, 11, 11, 11
+	]},
+	{ x:8, y:8, w:4, h:4, data: [
+        10, 10, 11, 11,
+        10, 10, 11, 11,
+        10, 10, 11, 11,
+        10, 10, 11, 11,
+	]}
+];
+
+// stores information for each map tile
+function Tile(tx, ty, tt)
 {
-    // if x and y is in map bound
-    if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
-    // if the tile is path tile (only move if its a path)
-	if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
-	return true;
+    // ty, tx = the position of the tile on the map
+	this.x			= tx;
+	this.y			= ty;
+	this.type		= tt;
+	this.roof		= null;
+    this.roofType	= 0;
+    //  pointer to a function to execute when a character has completed moving on to this tile
+	this.eventEnter	= null;
+}
+
+// stores and manages our loaded map data
+function TileMap()
+{
+	this.map	= [];
+	this.w		= 0;
+	this.h		= 0;
+}
+
+TileMap.prototype.buildMapFromData = function(tileMapId, w, h)
+{
+	this.w		= w;
+    this.h		= h;
+
+    if(tileMapId.length!=(w * h)) { return false; }
+	
+    this.map.length	= 0;
+    	for(let y = 0; y < h; y++)
+	{
+		for(let x = 0; x < w; x++)
+		{
+			this.map.push( new Tile(x, y, tileMapId[((y*w)+x)]) );
+		}
+    }
+    return true;
 };
-Character.prototype.canMoveUp = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]-1); };
-Character.prototype.canMoveDown = function() { return this.canMoveTo(this.tileFrom[0], this.tileFrom[1]+1); };
-Character.prototype.canMoveLeft = function() { return this.canMoveTo(this.tileFrom[0]-1, this.tileFrom[1]); };
-Character.prototype.canMoveRight = function() { return this.canMoveTo(this.tileFrom[0]+1, this.tileFrom[1]); };
 
-Character.prototype.moveLeft = function(t) { this.tileTo[0]-= 1; this.timeMoved = t; this.direction = directions.left; };
-Character.prototype.moveRight = function(t) { this.tileTo[0]+= 1; this.timeMoved = t; this.direction = directions.right; };
-Character.prototype.moveUp = function(t) { this.tileTo[1]-= 1; this.timeMoved = t; this.direction = directions.up; };
-Character.prototype.moveDown = function(t) { this.tileTo[1]+= 1; this.timeMoved = t; this.direction = directions.down; };
 
+TileMap.prototype.addRoofs = function(roofs)
+{
+	for(let i in roofs)
+	{
+        let r = roofs[i];
+        if(r.x < 0 || r.y < 0 || r.x >= this.w || r.y >= this.h ||
+			(r.x+r.w)>this.w || (r.y+r.h)>this.h ||
+			r.data.length!=(r.w*r.h))
+		{
+			continue;
+        }
+        for(let y = 0; y < r.h; y++)
+		{
+			for(let x = 0; x < r.w; x++)
+			{
+                let tileIdx = (((r.y+y)*this.w)+r.x+x);
+                this.map[tileIdx].roof = r;
+				this.map[tileIdx].roofType = r.data[((y*r.w)+x)];
+			}
+		}
+	}
+};
 
 
 // convert x, y into index in gameMap arr
 function toIndex(x, y) {
 	return((y * mapWidth) + x);
+}
+
+function getFrame(sprite, duration, time, animated)
+{
+	if(!animated) { return sprite[0]; }
+	time = time % duration;
+
+	for(x in sprite)
+	{
+		if(sprite[x].end>=time) { return sprite[x]; }
+	}
 }
 
 // loop starts when page done loading
@@ -231,7 +355,12 @@ window.onload = function() {
 		alert("Failed loading tileset.");
 	};
 	tileset.onload = function() { tilesetLoaded = true; };
-	tileset.src = tilesetURL;
+    tileset.src = tilesetURL;
+    
+    mapTileData.buildMapFromData(gameMap, mapWidth, mapHeight);
+	mapTileData.addRoofs(roofList);
+	mapTileData.map[((2*mapWidth)+2)].eventEnter = function()
+	{ console.log("Entered tile 2,2"); };
 };
 
 
@@ -264,6 +393,12 @@ function drawGame()
     // set the viewport centre to the player top/left position plus half the players width/height.
         viewport.update(player.position[0] + (player.dimensions[0]/2),
             player.position[1] + (player.dimensions[1]/2));
+
+	    let playerRoof1 = mapTileData.map[toIndex(
+		player.tileFrom[0], player.tileFrom[1])].roof;
+	    let playerRoof2 = mapTileData.map[toIndex(
+		player.tileTo[0], player.tileTo[1])].roof;
+
         // erase anything on the Canvas from the last frame
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, viewport.screen[0], viewport.screen[1]);
@@ -271,11 +406,26 @@ function drawGame()
     // nested loops: y and x
 		for(let y = viewport.startTile[1]; y <= viewport.endTile[1]; ++y) {
 		    for(let x = viewport.startTile[0]; x <= viewport.endTile[0]; ++x) {
-                let tile = tileTypes[gameMap[toIndex(x,y)]];
+                let tile = tileTypes[mapTileData.map[toIndex(x,y)].type];
+
 			    ctx.drawImage(tileset,
 				tile.sprite[0].x, tile.sprite[0].y, tile.sprite[0].w, tile.sprite[0].h,
 				viewport.offset[0] + (x * tileWidth), viewport.offset[1] + (y * tileHeight),
-				tileWidth, tileHeight);
+                tileWidth, tileHeight);
+            
+               if(mapTileData.map[toIndex(x,y)].roofType!=0 &&
+				mapTileData.map[toIndex(x,y)].roof!=playerRoof1 &&
+				mapTileData.map[toIndex(x,y)].roof!=playerRoof2)
+			{
+				tile = tileTypes[mapTileData.map[toIndex(x,y)].roofType];
+				sprite = getFrame(tile.sprite, tile.spriteDuration,
+					 tile.animated);
+				ctx.drawImage(tileset,
+					sprite.x, sprite.y, sprite.w, sprite.h,
+					viewport.offset[0] + (x*tileWidth),
+					viewport.offset[1] + (y*tileHeight),
+					tileWidth, tileHeight);
+			}
 		}
     }
 
