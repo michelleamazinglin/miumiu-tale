@@ -5,7 +5,7 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 3, 3, 3, 3, 1, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 3, 3, 3, 3, 0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0,
 	0, 2, 2, 2, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
 	0, 2, 2, 2, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
 	0, 2, 2, 2, 1, 3, 2, 2, 3, 1, 3, 2, 2, 2, 2, 3, 2, 2, 2, 0,
@@ -64,7 +64,7 @@ let directions = {
 let floorTypes = {
     solid: 0,
     path: 1,
-    water: 2
+    ocean: 2
 };
 
 // 数字（gameMap）对应上颜色和地板种类
@@ -74,7 +74,7 @@ let tileTypes = {
 	1 : { colour: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
 	2 : { colour: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
 	3 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
-    4 : { colour: "#008df0", floor: floorTypes.water, sprite:[{x:160,y:0,w:40,h:40}] },
+    4 : { colour: "#008df0", floor: floorTypes.ocean, sprite:[{x:160,y:0,w:40,h:40}] },
     10 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:40,w:40,h:40}]},
     11 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:40,w:40,h:40}]},
     12 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:40,w:40,h:40}]},
@@ -85,6 +85,43 @@ let tileTypes = {
     17 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:120,w:40,h:40}]},
     18 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:120,w:40,h:40}]}
 };
+
+let collisions = {
+	none		: 0,
+	solid		: 1
+};
+
+let objectTypes = {
+	1 : {
+		name : "Flower",
+		sprite : [{x:40,y:180,w:40,h:20}],
+		offset : [0,0],
+		collision : collisions.none,
+		zIndex : 1
+	},
+	2 : {
+		name : "fence",
+		sprite : [{x:40,y:200,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+	},
+	3 : {
+		name : "Tree",
+		sprite : [{x:80,y:160,w:80,h:80}],
+		offset : [-20,-20],
+		collision : collisions.solid,
+		zIndex : 3
+    },
+    4 : {
+		name : "mashrooms",
+		sprite : [{x:40,y:160,w:40,h:20}],
+		offset : [0,0],
+		collision : collisions.none,
+		zIndex : 1
+	},
+};
+
 
 // 物品
 let itemTypes = {
@@ -112,8 +149,9 @@ let gametile = null, gametileURL = "src/images/tilesetestt.png", artLoaded = fal
 let miumiu = new MiuMiu();
 // 加更多角色⬇
 function MiuMiu() {
-	this.tileFrom	= [1,1];
-    this.tileTo		= [10,10];
+    this.tileFrom	= [1,1];
+    // miumiu的位置
+    this.tileTo		= [6,6];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
@@ -181,7 +219,15 @@ MiuMiu.prototype.placesCanGo = function(x, y) {
     // if x and y is in map bound
     if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
     // if the tile is path tile (only move if its a path)
-		if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
+        if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
+        if(mapTileData.map[toIndex(x,y)].object!=null)
+	{
+		let o = mapTileData.map[toIndex(x,y)].object;
+		if(objectTypes[o.type].collision==collisions.solid)
+		{
+			return false;
+		}
+	}
 	return true;
 };
 MiuMiu.prototype.canGoUp = function() { return this.placesCanGo(this.tileFrom[0], this.tileFrom[1] - 1); };
@@ -267,14 +313,17 @@ function Tile(tileX, tileY, tileType)
 	this.building		= null;
     this.buildingType	= 0;
     //  pointer to a function to execute when a MiuMiu has completed moving on to this tile
-	this.eventEnter	= null;
+    this.eventEnter	= null;
+    this.object		= null;
+
 }
 
 // 储存管理地图数据
 function TileMap() {
 	this.map	= [];
 	this.w		= 0;
-	this.h		= 0;
+    this.h		= 0;
+	this.levels	= 4;
 }
 
 TileMap.prototype.buildMapFromData = function(tileId, w, h) {
@@ -310,6 +359,27 @@ TileMap.prototype.addBuildings = function(buildings)
 		}
 	}
 };
+
+// 物品摆放
+function GameObjects(nt)
+{
+	this.x		= 0;
+	this.y		= 0;
+	this.type	= nt;
+}
+
+GameObjects.prototype.placeAt = function(nx, ny)
+{
+	if(mapTileData.map[toIndex(this.x, this.y)].object==this)
+	{
+		mapTileData.map[toIndex(this.x, this.y)].object = null;
+    }
+    this.x = nx;
+	this.y = ny;
+	
+	mapTileData.map[toIndex(nx, ny)].object = this;
+};
+
 
 
 // convert x, y into index in gameMap arr
@@ -356,7 +426,23 @@ window.onload = function() {
     mapTileData.buildMapFromData(gameMap, mapWidth, mapHeight);
 	mapTileData.addBuildings(buildingsLocation);
 	mapTileData.map[((2*mapWidth)+2)].eventEnter = function()
-	{ console.log("Entered tile 2,2"); };
+    { console.log("Entered tile 2,2"); };
+    
+    
+	let fence1 = new GameObjects(2); fence1.placeAt(9, 1);
+    let fence2 = new GameObjects(2); fence2.placeAt(9, 2);
+    
+    let flower1 = new GameObjects(1); flower1.placeAt(5, 5);
+    let flower2 = new GameObjects(1); flower2.placeAt(7, 5);
+    let flower3 = new GameObjects(1); flower3.placeAt(8, 5);
+    
+	let tree1 = new GameObjects(3); tree1.placeAt(4, 6);
+	let tree2 = new GameObjects(3); tree2.placeAt(9, 6);
+	let tree3 = new GameObjects(3); tree3.placeAt(7, 6);	
+    let tree4 = new GameObjects(3); tree4.placeAt(12, 6);
+    
+    let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,2);
+
 };
 
 
@@ -403,31 +489,57 @@ function drawGame()
         ctx.fillRect(0, 0, camera.screen[0], camera.screen[1]);
     
     // nested loops: y and x
+    for(let z = 0; z < mapTileData.levels; z++) {
 		for(let y = camera.startingPoint[1]; y <= camera.endingPoint[1]; ++y) {
 		    for(let x = camera.startingPoint[0]; x <= camera.endingPoint[0]; ++x) {
+                if(z==0) {
                 let tile = tileTypes[mapTileData.map[toIndex(x,y)].type];
 
 			    ctx.drawImage(gametile,
 				tile.sprite[0].x, tile.sprite[0].y, tile.sprite[0].w, tile.sprite[0].h,
 				camera.offset[0] + (x * tileWidth), camera.offset[1] + (y * tileHeight),
                 tileWidth, tileHeight);
-            
-               if(mapTileData.map[toIndex(x,y)].buildingType!=0 &&
+                }
+            let o = mapTileData.map[toIndex(x,y)].object;
+			if(o!=null && objectTypes[o.type].zIndex==z)
+			{
+				let ot = objectTypes[o.type];
+				 
+				ctx.drawImage(gametile,
+					ot.sprite[0].x, ot.sprite[0].y,
+					ot.sprite[0].w, ot.sprite[0].h,
+					camera.offset[0] + (x*tileWidth) + ot.offset[0],
+					camera.offset[1] + (y*tileHeight) + ot.offset[1],
+					ot.sprite[0].w, ot.sprite[0].h);
+			}
+
+               if(z == 2 && mapTileData.map[toIndex(x,y)].buildingType!=0 &&
 				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding1 &&
 				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding2) {
-				tile = tileTypes[mapTileData.map[toIndex(x,y)].buildingType];
-				sprite = getFrame(tile.sprite, tile.spritetimeLast,
-					 tile.animation);
-				ctx.drawImage(gametile,
-					sprite.x, sprite.y, sprite.w, sprite.h,
-					camera.offset[0] + (x * tileWidth),
-					camera.offset[1] + (y * tileHeight),
-					tileWidth, tileHeight);
+                    tile = tileTypes[mapTileData.map[toIndex(x,y)].buildingType];
+                    sprite = getFrame(tile.sprite, tile.spritetimeLast,
+                        tile.animation);
+                    ctx.drawImage(gametile,
+                        sprite.x, sprite.y, sprite.w, sprite.h,
+                        camera.offset[0] + (x * tileWidth),
+                        camera.offset[1] + (y * tileHeight),
+                        tileWidth, tileHeight);
 			}
 		}
     }
 
-
+    if(z==1)
+		{
+			let sprite = miumiu.sprites[miumiu.direction];
+			ctx.drawImage(gametile,
+				sprite[0].x, sprite[0].y,
+				sprite[0].w, sprite[0].h,
+				camera.offset[0] + miumiu.position[0],
+				camera.offset[1] + miumiu.position[1],
+				miumiu.dimensions[0], miumiu.dimensions[1]);
+		}
+	
+	}
     
     // draw the miumiu
     let sprite = miumiu.sprites[miumiu.direction];
