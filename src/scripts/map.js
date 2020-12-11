@@ -109,7 +109,7 @@ let gametile = null, gametileURL = "src/images/tilesetestt.png", artLoaded = fal
 
 
 // 创建一个角色 (miumiu)
-let player = new MiuMiu();
+let miumiu = new MiuMiu();
 // 加更多角色⬇
 function MiuMiu() {
 	this.tileFrom	= [1,1];
@@ -363,38 +363,42 @@ window.onload = function() {
 // main function
 function drawGame()
 {
-    if(ctx==null) { return; }
-    if(!artLoaded) { requestAnimationFrame(drawGame); return; }
+    if (ctx == null) { return; }
+    if (!artLoaded) { requestAnimationFrame(drawGame); return; }
 
 	let currentFrameTime = Date.now();
-
     // framecount 
-	let sec = Math.floor(Date.now()/1000);
-	if(sec!=currentSecond){
+	let sec = Math.floor(Date.now() / 1000);
+	if(sec != currentSecond){
 		currentSecond = sec;
 		framesLastSecond = frameCount;
 		frameCount = 1;
 	}
 	else { frameCount++; }
 
-    // player movement
-	if(!player.processMovement(currentFrameTime)) {
-		if(heldKeys[38] && player.canGoUp())		{ player.goUp(currentFrameTime); }
-		else if(heldKeys[40] && player.canGoDown())	{ player.goDown(currentFrameTime); }
-		else if(heldKeys[37] && player.canGoLeft())	{ player.goLeft(currentFrameTime); }
-		else if(heldKeys[39] && player.canGoRight())	{ player.goRight(currentFrameTime); }
+    // miumiu movement
+	if(!miumiu.processMovement(currentFrameTime)) {
+		if(heldKeys[38] && miumiu.canGoUp()){ 
+            miumiu.goUp(currentFrameTime); 
+        } else if (heldKeys[40] && miumiu.canGoDown()) { 
+            miumiu.goDown(currentFrameTime); 
+        } else if(heldKeys[37] && miumiu.canGoLeft()) { 
+            miumiu.goLeft(currentFrameTime); 
+        } else if(heldKeys[39] && miumiu.canGoRight()) { 
+            miumiu.goRight(currentFrameTime); 
+        }
     }
 
-    // set the camera centre to the player top/left position plus half the players width/height.
-        camera.update(player.position[0] + (player.dimensions[0]/2),
-            player.position[1] + (player.dimensions[1]/2));
+    // camera跟着miumiu走
+        camera.update(miumiu.position[0] + (miumiu.dimensions[0] / 2),
+            miumiu.position[1] + (miumiu.dimensions[1]/2));
 
-	    let playerBuilding1 = mapTileData.map[toIndex(
-		player.tileFrom[0], player.tileFrom[1])].building;
-	    let playerBuilding2 = mapTileData.map[toIndex(
-		player.tileTo[0], player.tileTo[1])].building;
+	    let miumiuBuilding1 = mapTileData.map[toIndex(
+		miumiu.tileFrom[0], miumiu.tileFrom[1])].building;
+	    let miumiuBuilding2 = mapTileData.map[toIndex(
+		miumiu.tileTo[0], miumiu.tileTo[1])].building;
 
-        // erase anything on the Canvas from the last frame
+        // 清除last frame
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, camera.screen[0], camera.screen[1]);
     
@@ -409,16 +413,15 @@ function drawGame()
                 tileWidth, tileHeight);
             
                if(mapTileData.map[toIndex(x,y)].buildingType!=0 &&
-				mapTileData.map[toIndex(x,y)].building!=playerBuilding1 &&
-				mapTileData.map[toIndex(x,y)].building!=playerBuilding2)
-			{
+				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding1 &&
+				mapTileData.map[toIndex(x,y)].building!=miumiuBuilding2) {
 				tile = tileTypes[mapTileData.map[toIndex(x,y)].buildingType];
 				sprite = getFrame(tile.sprite, tile.spritetimeLast,
 					 tile.animation);
 				ctx.drawImage(gametile,
 					sprite.x, sprite.y, sprite.w, sprite.h,
-					camera.offset[0] + (x*tileWidth),
-					camera.offset[1] + (y*tileHeight),
+					camera.offset[0] + (x * tileWidth),
+					camera.offset[1] + (y * tileHeight),
 					tileWidth, tileHeight);
 			}
 		}
@@ -426,12 +429,12 @@ function drawGame()
 
 
     
-    // draw the player
-    let sprite = player.sprites[player.direction];
+    // draw the miumiu
+    let sprite = miumiu.sprites[miumiu.direction];
 	ctx.drawImage(gametile,
 		sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h,
-		camera.offset[0] + player.position[0], camera.offset[1] + player.position[1],
-		player.dimensions[0], player.dimensions[1]);
+		camera.offset[0] + miumiu.position[0], camera.offset[1] + miumiu.position[1],
+		miumiu.dimensions[0], miumiu.dimensions[1]);
 
 
 	lastFrameTime = currentFrameTime;
