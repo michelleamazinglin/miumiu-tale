@@ -5,11 +5,11 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 6, 5, 5, 7, 0, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 5, 2, 2, 2, 2, 5, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 16, 20, 16, 18, 1, 5, 5, 5, 5, 2, 5, 2, 2, 2, 0,
+	0, 0, 0, 0, 0, 6, 5, 5, 7, 0, 26, 25, 25, 25, 25, 25, 27, 0, 0, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
+	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
+	0, 1, 1, 1, 1, 16, 20, 16, 18, 1, 16, 18, 16, 19, 28, 18, 18, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
@@ -68,31 +68,42 @@ let floorTypes = {
 };
 
 // 数字（gameMap）对应上颜色和地板种类
-// 0:墙壁 1:草地 2:陆地 5:内部墙壁 4: 水 6: 内部墙壁左角 7:内部墙壁右角
-// 20:内部地板 21:内部墙左 22:内部墙右
+// 0:墙壁 1:草地 2:陆地  4: 水  
+// 5:黄色内部墙壁 6: 黄色内部墙壁左角 7:黄色内部墙壁右角
+// 20:黄色内部地板 21:黄色内部墙左 22:黄色内部墙右
+// 25:棕色内部墙壁 26:棕色内部墙壁左角 27: 棕色内部墙壁右角
+// 28: 棕色内部地板 29: 棕色内部墙左 30:棕色内部墙右
 // 10-19 房子外观
 let tileTypes = {
-	0 : { colour: "#793d4c", floor: floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}] },
-	1 : { colour: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
-	2 : { colour: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
-    4 : { colour: "#008df0", floor: floorTypes.ocean, sprite:[{x:160,y:0,w:40,h:40}] },
-    5 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
-    6 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:40,w:40,h:40}] },
-    7 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:40,w:40,h:40}] },
+	0 : { color: "#793d4c", floor: floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}] },
+	1 : { color: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
+	2 : { color: "#c97461", floor: floorTypes.path, sprite:[{x:80,y:0,w:40,h:40}]	},
+    4 : { color: "#008df0", floor: floorTypes.ocean, sprite:[{x:160,y:0,w:40,h:40}] },
+    5 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
+    6 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:40,w:40,h:40}] },
+    7 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:40,w:40,h:40}] },
     
-    10 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:40,w:40,h:40}]},
-    11 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:40,w:40,h:40}]},
-    12 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:40,w:40,h:40}]},
-    13 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:80,w:40,h:40}]},
-    14 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:80,w:40,h:40}]},
-    15 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:80,w:40,h:40}]},
-    16 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:120,w:40,h:40}]},
-    17 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:120,w:40,h:40}]},
-    18 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:120,w:40,h:40}]},
-    19 : { colour:"#ccaa00", floor:floorTypes.solid, sprite:[{x:360,y:120,w:40,h:40}]},
-    20 : { colour: "#d77c4b", floor: floorTypes.path, sprite:[{x:40,y:40,w:40,h:40}]},
-    21 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:80,w:40,h:40}]},
-    22 : { colour: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:80,w:40,h:40}]}
+    10 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:40,w:40,h:40}]},
+    11 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:40,w:40,h:40}]},
+    12 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:40,w:40,h:40}]},
+    13 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:80,w:40,h:40}]},
+    14 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:80,w:40,h:40}]},
+    15 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:80,w:40,h:40}]},
+    16 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:120,w:40,h:40}]},
+    17 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:120,w:40,h:40}]},
+    18 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:120,w:40,h:40}]},
+    19 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:360,y:120,w:40,h:40}]},
+    
+    20 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:40,y:40,w:40,h:40}]},
+    21 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:80,w:40,h:40}]},
+    22 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:80,w:40,h:40}]},
+
+    25 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:320,y:160,w:40,h:40}]},
+    26 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:240,y:160,w:40,h:40}]},
+    27 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:280,y:160,w:40,h:40}]},
+    28 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:280,y:200,w:40,h:40}]},
+    29 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:360,y:160,w:40,h:40}]},
+    30 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:240,y:200,w:40,h:40}]},
 };
 
 let collisions = {
@@ -135,7 +146,84 @@ let objectTypes = {
 		offset : [-20,-20],
 		collision : collisions.solid,
 		zIndex : 3
-	}
+    },
+    6 : {
+		name : "donuts",
+		sprite : [{x:360,y:0,w:80,h:115}],
+		offset : [0,0],
+		collision : collisions.none,
+		zIndex : 1
+    },
+    7 : {
+		name : "cooking",
+		sprite : [{x:160,y:80,w:80,h:80}],
+		offset : [0,0],
+		collision : collisions.none,
+		zIndex : 1
+    },
+    8 : {
+		name : "carpet",
+		sprite : [{x:0,y:80,w:80,h:40}],
+		offset : [0,0],
+		collision : collisions.none,
+		zIndex : 1
+    },
+    9 : {
+		name : "desk",
+		sprite : [{x:0,y:40,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    10 : {
+		name : "chair",
+		sprite : [{x:320,y:0,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    11 : {
+		name : "Tree Plant",
+		sprite : [{x:40,y:120,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    12 : {
+		name : "drum",
+		sprite : [{x:0,y:240,w:80,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    13 : {
+		name : "instruments",
+		sprite : [{x:80,y:240,w:120,h:80}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    14 : {
+		name : "BookShelf",
+		sprite : [{x:200,y:240,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    15 : {
+		name : "saxophone",
+		sprite : [{x:240,y:240,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
+    16 : {
+		name : "Right Facing Chair",
+		sprite : [{x:200,y:280,w:40,h:40}],
+		offset : [0,0],
+		collision : collisions.solid,
+		zIndex : 1
+    },
 };
 
 
@@ -167,7 +255,7 @@ let miumiu = new MiuMiu();
 function MiuMiu() {
     this.tileFrom	= [1,1];
     // miumiu的位置
-    this.tileTo		= [6,3];
+    this.tileTo		= [12,3];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
@@ -201,14 +289,13 @@ MiuMiu.prototype.processMovement = function(t) {
     // aka: if char still moving
 	if((t - this.timeMoved) >= this.delayMove) {
         this.location(this.tileTo[0], this.tileTo[1]);
-        if(mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter!=null)
-		{
+        if(mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter != null) {
 			mapTileData.map[toIndex(this.tileTo[0], this.tileTo[1])].eventEnter(this);
         }
 	} else {
         // current position on canvas
-		this.position[0] = (this.tileFrom[0] * tileWidth) + ((tileWidth-this.dimensions[0])/2);
-		this.position[1] = (this.tileFrom[1] * tileHeight) + ((tileHeight-this.dimensions[1])/2);
+		this.position[0] = (this.tileFrom[0] * tileWidth) + ((tileWidth - this.dimensions[0]) / 2);
+		this.position[1] = (this.tileFrom[1] * tileHeight) + ((tileHeight - this.dimensions[1]) / 2);
 
         // if char is moving on x coordinate, calculate pixels
 		if(this.tileTo[0] != this.tileFrom[0]) {
@@ -235,12 +322,10 @@ MiuMiu.prototype.placesCanGo = function(x, y) {
     // if x and y is in map bound
     if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
     // if the tile is path tile (only move if its a path)
-        if(tileTypes[gameMap[toIndex(x,y)]].floor!=floorTypes.path) { return false; }
-        if(mapTileData.map[toIndex(x,y)].object!=null)
-	{
-		let o = mapTileData.map[toIndex(x,y)].object;
-		if(objectTypes[o.type].collision==collisions.solid)
-		{
+        if(tileTypes[gameMap[toIndex(x,y)]].floor != floorTypes.path) { return false; }
+        if(mapTileData.map[toIndex(x,y)].object != null) {
+		let object = mapTileData.map[toIndex(x,y)].object;
+		if(objectTypes[object.type].collision == collisions.solid) {
 			return false;
 		}
 	}
@@ -305,12 +390,12 @@ let buildingsLocation = [
         16, 18, 16, 18,
         16, 17, 16, 18
 	]},
-	{ x:10, y:0, w:6, h:5, data: [
-		10, 11, 11, 11, 11, 12,
-        13, 15, 13, 14, 14, 15,
-        16, 18, 16, 19, 19, 18,
-        16, 18, 16, 19, 19, 18,
-        16, 18, 16, 19, 17, 18
+	{ x:10, y:0, w:7, h:5, data: [
+		10, 11, 11, 11, 11, 12, 12,
+        13, 15, 13, 14, 14, 15, 15,
+        16, 18, 16, 19, 19, 18, 18,
+        16, 18, 16, 19, 19, 18, 18,
+        16, 18, 16, 19, 17, 18, 18
 	]},
 	{ x:8, y:8, w:4, h:4, data: [
         10, 11, 11, 12,
@@ -359,17 +444,15 @@ TileMap.prototype.buildMapFromData = function(tileId, w, h) {
 };
 
 
-TileMap.prototype.addBuildings = function(buildings)
-{
-	for(let i in buildings)
-	{
+TileMap.prototype.addBuildings = function(buildings) {
+	for(let i in buildings) {
         let building = buildings[i];
         if(building.x < 0 || building.y < 0 || building.x >= this.w || building.y >= this.h ||	(building.x+building.w)>this.w || (building.y+building.h)>this.h || building.data.length!=(building.w*building.h)) {
 			continue;
         }
         for(let y = 0; y < building.h; y++) {
 			for(let x = 0; x < building.w; x++) {
-                let tileIdx = (((building.y + y) * this.w)+building.x + x);
+                let tileIdx = (((building.y + y) * this.w) + building.x + x);
                 this.map[tileIdx].building = building;
 				this.map[tileIdx].buildingType = building.data[( (y * building.w) + x)];
 			}
@@ -378,17 +461,14 @@ TileMap.prototype.addBuildings = function(buildings)
 };
 
 // 物品摆放
-function GameObjects(nt)
-{
+function GameObjects(nt) {
 	this.x		= 0;
 	this.y		= 0;
 	this.type	= nt;
 }
 
-GameObjects.prototype.placeAt = function(nx, ny)
-{
-	if(mapTileData.map[toIndex(this.x, this.y)].object==this)
-	{
+GameObjects.prototype.placeAt = function(nx, ny) {
+	if(mapTileData.map[toIndex(this.x, this.y)].object == this) {
 		mapTileData.map[toIndex(this.x, this.y)].object = null;
     }
     this.x = nx;
@@ -404,8 +484,7 @@ function toIndex(x, y) {
 	return(x + (mapWidth * y));
 }
 
-function getFrame(sprite, timeLast, time, animation)
-{
+function getFrame(sprite, timeLast, time, animation) {
 	if(!animation) { return sprite[0]; }
 	time = time % timeLast;
 
@@ -421,10 +500,10 @@ window.onload = function() {
     
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
-		if(e.keyCode>=37 && e.keyCode<=40) { heldKeys[e.keyCode] = true; }
+		if(e.keyCode >= 37 && e.keyCode <=40 ) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
-		if(e.keyCode>=37 && e.keyCode<=40) { heldKeys[e.keyCode] = false; }
+		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
     });
 
     // canvas尺寸 保存到 相机
@@ -432,8 +511,7 @@ window.onload = function() {
         document.getElementById("miumiuTale").height];
         
     gametile = new Image();
-	gametile.onerror = function()
-	{
+	gametile.onerror = function() {
 		ctx = null;
 		alert("Failed loading gametile.");
 	};
@@ -442,9 +520,7 @@ window.onload = function() {
     
     mapTileData.buildMapFromData(gameMap, mapWidth, mapHeight);
 	mapTileData.addBuildings(buildingsLocation);
-	mapTileData.map[((2*mapWidth)+2)].eventEnter = function()
-    { console.log("Entered tile 2,2"); };
-    
+	mapTileData.map[((2 * mapWidth) + 2)].eventEnter = function() { console.log("Entered tile 2,2"); };
     
 	let fence1 = new GameObjects(2); fence1.placeAt(9, 1);
     
@@ -457,17 +533,40 @@ window.onload = function() {
 	let tree3 = new GameObjects(3); tree3.placeAt(7, 6);	
     let tree4 = new GameObjects(3); tree4.placeAt(12, 6);
     
-    let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,2);
+    let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,4);
     let mashroom2 = new GameObjects(4); mashroom2.placeAt(9,2);
+    
 
     let pigShop1 = new GameObjects(5); pigShop1.placeAt(3, 4);
+
+    let donuts = new GameObjects(6); donuts.placeAt(5, 0);
+
+    let cooking = new GameObjects(7); cooking.placeAt(7, 0);
+
+    let carpet = new GameObjects(8); carpet.placeAt(7,2);
+
+    let desk = new GameObjects(9); desk.placeAt(8,3);
+
+    let chair = new GameObjects(10); chair.placeAt(8,2);
+    let chair2 = new GameObjects(16); chair2.placeAt(12,2);
+
+    let treePlant = new GameObjects(11); treePlant.placeAt(5,3);
+
+    let drum = new GameObjects(12); drum.placeAt(15,1);
+
+    let instruments = new GameObjects(13); instruments.placeAt(12,0);
+
+    let bookShelf1 = new GameObjects(14); bookShelf1.placeAt(10,1);
+    let bookShelf2 = new GameObjects(14); bookShelf2.placeAt(10,2);
+
+    let saxophone = new GameObjects(15); saxophone.placeAt(13,2);
 
 };
 
 
+
 // main function
-function drawGame()
-{
+function drawGame() {
     if (ctx == null) { return; }
     if (!artLoaded) { requestAnimationFrame(drawGame); return; }
 
@@ -478,8 +577,9 @@ function drawGame()
 		currentSecond = sec;
 		framesLastSecond = frameCount;
 		frameCount = 1;
-	}
-	else { frameCount++; }
+	} else { 
+        frameCount++; 
+    }
 
     // miumiu movement
 	if(!miumiu.processMovement(currentFrameTime)) {
@@ -496,7 +596,7 @@ function drawGame()
 
     // camera跟着miumiu走
         camera.update(miumiu.position[0] + (miumiu.dimensions[0] / 2),
-            miumiu.position[1] + (miumiu.dimensions[1]/2));
+            miumiu.position[1] + (miumiu.dimensions[1] / 2));
 
 	    let miumiuBuilding1 = mapTileData.map[toIndex(
 		miumiu.tileFrom[0], miumiu.tileFrom[1])].building;
@@ -548,16 +648,11 @@ function drawGame()
 				camera.offset[1] + miumiu.position[1],
 				miumiu.dimensions[0], miumiu.dimensions[1]);
 		}
-	
 	}
     
     // draw the miumiu
     let sprite = miumiu.sprites[miumiu.direction];
-	ctx.drawImage(gametile,
-		sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h,
-		camera.offset[0] + miumiu.position[0], camera.offset[1] + miumiu.position[1],
-		miumiu.dimensions[0], miumiu.dimensions[1]);
-
+	ctx.drawImage(gametile, sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h, camera.offset[0] + miumiu.position[0], camera.offset[1] + miumiu.position[1], miumiu.dimensions[0], miumiu.dimensions[1]);
 
 	lastFrameTime = currentFrameTime;
 	requestAnimationFrame(drawGame);
