@@ -281,10 +281,10 @@ function MiuMiu() {
     
     this.direction	= directions.up;
 	this.sprites = {};
-	this.sprites[directions.up]		= [{x:0,y:120,w:30,h:30}];
-	this.sprites[directions.right]	= [{x:0,y:150,w:30,h:30}];
-	this.sprites[directions.down]	= [{x:0,y:180,w:30,h:30}];
-	this.sprites[directions.left]	= [{x:0,y:210,w:30,h:30}];
+	this.sprites[directions.up]	= [{x:0,y:120,w:30,h:30}];
+	this.sprites[directions.right] = [{x:0,y:150,w:30,h:30}];
+	this.sprites[directions.down] = [{x:0,y:180,w:30,h:30}];
+	this.sprites[directions.left] = [{x:0,y:210,w:30,h:30}];
 }
 
 
@@ -479,9 +479,9 @@ TileMap.prototype.addBuildings = function(buildings) {
 
 // 物品摆放
 function GameObjects(nt) {
-	this.x		= 0;
-	this.y		= 0;
-	this.type	= nt;
+	this.x = 0;
+	this.y = 0;
+	this.type = nt;
 }
 
 GameObjects.prototype.placeAt = function(nx, ny) {
