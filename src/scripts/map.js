@@ -13,10 +13,10 @@ let gameMap = [
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
 	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 0,
-    0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 5, 2, 5, 5, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 31, 32, 33, 34, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 35, 36, 37, 38, 2, 2, 2, 2, 2, 2, 2, 0,
+    0, 2, 2, 2, 2, 2, 2, 2, 39, 40, 41, 42, 2, 2, 2, 2, 2, 2, 2, 0,
+	0, 2, 2, 2, 2, 2, 2, 2, 16, 36, 16, 18, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
 	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
@@ -74,6 +74,7 @@ let floorTypes = {
 // 25:棕色内部墙壁 26:棕色内部墙壁左角 27: 棕色内部墙壁右角
 // 28: 棕色内部地板 29: 棕色内部墙左 30:棕色内部墙右
 // 10-19 房子外观
+// 31-42 miumiu room
 let tileTypes = {
 	0 : { color: "#793d4c", floor: floorTypes.solid, sprite:[{x:0,y:0,w:40,h:40}] },
 	1 : { color: "#6df7b1", floor: floorTypes.path, sprite:[{x:40,y:0,w:40,h:40}] },
@@ -104,6 +105,22 @@ let tileTypes = {
     28 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:280,y:200,w:40,h:40}]},
     29 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:360,y:160,w:40,h:40}]},
     30 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:240,y:200,w:40,h:40}]},
+
+    31 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:320,y:200,w:40,h:40}]},
+    32 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:360,y:200,w:40,h:40}]},
+    33 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:400,y:200,w:40,h:40}]},
+    34 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:440,y:200,w:40,h:40}]},
+    35 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:320,y:240,w:40,h:40}]},
+    36 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:360,y:240,w:40,h:40}]},
+    37 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:400,y:240,w:40,h:40}]},
+    38 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:440,y:240,w:40,h:40}]},
+    39 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:320,y:280,w:40,h:40}]},
+    40 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:360,y:280,w:40,h:40}]},
+    41 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:400,y:280,w:40,h:40}]},
+    42 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:440,y:280,w:40,h:40}]},
+
+
+    
 };
 
 let collisions = {
@@ -255,7 +272,7 @@ let miumiu = new MiuMiu();
 function MiuMiu() {
     this.tileFrom	= [1,1];
     // miumiu的位置
-    this.tileTo		= [12,3];
+    this.tileTo		= [9,11];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
