@@ -529,7 +529,7 @@ window.onload = function() {
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
-    });
+	});
 
     // canvas尺寸 保存到 相机
     camera.screen = [document.getElementById("miumiuTale").width,
@@ -566,7 +566,8 @@ window.onload = function() {
     let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,4);
     let mashroom2 = new GameObjects(4); mashroom2.placeAt(9,2);
 
-    let pigShop1 = new GameObjects(5); pigShop1.placeAt(3, 4);
+	let pigShop1 = new GameObjects(5); pigShop1.placeAt(3, 4);
+
 
     let donuts = new GameObjects(6); donuts.placeAt(5, 0);
 
