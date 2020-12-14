@@ -26,6 +26,7 @@ let gameMap = [
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
 ];
+
 // 每个地砖多少pixel
 let tileWidth = 40;
 let tileHeight = 40;
@@ -337,13 +338,15 @@ MiuMiu.prototype.processMovement = function(t) {
 // if char can move in a specific direc
 MiuMiu.prototype.placesCanGo = function(x, y) {
     // if x and y is in map bound
-    if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { return false; }
+    if(x < 0 || x >= mapWidth || y < 0 || y >= mapHeight) { 
+		return false; 
+	}
     // if the tile is path tile (only move if its a path)
         if(tileTypes[gameMap[toIndex(x,y)]].floor != floorTypes.path) { return false; }
         if(mapTileData.map[toIndex(x,y)].object != null) {
-		let object = mapTileData.map[toIndex(x,y)].object;
-		if(objectTypes[object.type].collision == collisions.solid) {
-			return false;
+			let object = mapTileData.map[toIndex(x,y)].object;
+			if(objectTypes[object.type].collision == collisions.solid) {
+				return false;
 		}
 	}
 	return true;
@@ -532,13 +535,18 @@ window.onload = function() {
 		ctx = null;
 		alert("Failed loading gametile.");
 	};
-	gametile.onload = function() { artLoaded = true; };
+	gametile.onload = function() { 
+		artLoaded = true; 
+	};
     gametile.src = gametileURL;
     
     mapTileData.buildMapFromData(gameMap, mapWidth, mapHeight);
 	mapTileData.addBuildings(buildingsLocation);
-	mapTileData.map[((2 * mapWidth) + 2)].eventEnter = function() { console.log("Entered tile 2,2"); };
-    
+	mapTileData.map[((2 * mapWidth) + 2)].eventEnter = function() { 
+		console.log("Entered tile 2,2"); 
+	};
+	
+	// 物品摆放位置
 	let fence1 = new GameObjects(2); fence1.placeAt(9, 1);
     
     let flower1 = new GameObjects(1); flower1.placeAt(5, 5);
@@ -549,10 +557,9 @@ window.onload = function() {
 	let tree2 = new GameObjects(3); tree2.placeAt(9, 6);
 	let tree3 = new GameObjects(3); tree3.placeAt(7, 6);	
     let tree4 = new GameObjects(3); tree4.placeAt(12, 6);
-    
+  
     let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,4);
     let mashroom2 = new GameObjects(4); mashroom2.placeAt(9,2);
-    
 
     let pigShop1 = new GameObjects(5); pigShop1.placeAt(3, 4);
 
@@ -584,8 +591,12 @@ window.onload = function() {
 
 // main function
 function drawGame() {
-    if (ctx == null) { return; }
-    if (!artLoaded) { requestAnimationFrame(drawGame); return; }
+    if (ctx == null) { 
+		return; 
+	}
+    if (!artLoaded) { 
+		requestAnimationFrame(drawGame); return; 
+	}
 
 	let currentFrameTime = Date.now();
     // framecount 
@@ -629,47 +640,73 @@ function drawGame() {
 		for(let y = camera.startingPoint[1]; y <= camera.endingPoint[1]; ++y) {
 		    for(let x = camera.startingPoint[0]; x <= camera.endingPoint[0]; ++x) {
                 if(z==0) {
-                let tile = tileTypes[mapTileData.map[toIndex(x,y)].type];
+					let tile = tileTypes[mapTileData.map[toIndex(x,y)].type];
 
-			    ctx.drawImage(gametile,
-				tile.sprite[0].x, tile.sprite[0].y, tile.sprite[0].w, tile.sprite[0].h,
-				camera.offset[0] + (x * tileWidth), camera.offset[1] + (y * tileHeight),
-                tileWidth, tileHeight);
+					ctx.drawImage(gametile, 
+									tile.sprite[0].x, 
+									tile.sprite[0].y, 
+									tile.sprite[0].w, 
+									tile.sprite[0].h,
+									camera.offset[0] + (x * tileWidth), 
+									camera.offset[1] + (y * tileHeight), 
+									tileWidth, 
+									tileHeight
+								);
                 }
-            let object = mapTileData.map[toIndex(x,y)].object;
-			if(object != null && objectTypes[object.type].zIndex == z) {
-				let objectType = objectTypes[object.type];
+				let object = mapTileData.map[toIndex(x,y)].object;
+				if(object != null && objectTypes[object.type].zIndex == z) {
+					let objectType = objectTypes[object.type];
 				 
-				ctx.drawImage(gametile,
-					objectType.sprite[0].x, objectType.sprite[0].y,
-					objectType.sprite[0].w, objectType.sprite[0].h,
-					camera.offset[0] + (x * tileWidth) + objectType.offset[0],
-					camera.offset[1] + (y * tileHeight) + objectType.offset[1],
-					objectType.sprite[0].w, objectType.sprite[0].h);
-			}
+					ctx.drawImage(gametile,
+								objectType.sprite[0].x, 
+								objectType.sprite[0].y,
+								objectType.sprite[0].w, 
+								objectType.sprite[0].h,
+								camera.offset[0] + (x * tileWidth) + objectType.offset[0],
+								camera.offset[1] + (y * tileHeight) + objectType.offset[1],
+								objectType.sprite[0].w, 
+								objectType.sprite[0].h
+								);
+				}
 
-               if(z == 2 && mapTileData.map[toIndex(x,y)].buildingType!=0 && mapTileData.map[toIndex(x,y)].building!=miumiuBuilding1 && mapTileData.map[toIndex(x,y)].building!=miumiuBuilding2) {
+               if(z == 2 && mapTileData.map[toIndex(x,y)].buildingType != 0 && mapTileData.map[toIndex(x,y)].building != miumiuBuilding1 && mapTileData.map[toIndex(x,y)].building != miumiuBuilding2) {
                     tile = tileTypes[mapTileData.map[toIndex(x,y)].buildingType];
                     sprite = getFrame(tile.sprite, tile.spritetimeLast, tile.animation);
-                    ctx.drawImage(gametile, sprite.x, sprite.y, sprite.w, sprite.h, camera.offset[0] + (x * tileWidth), camera.offset[1] + (y * tileHeight), tileWidth, tileHeight);
+					ctx.drawImage(gametile, 
+									sprite.x, 
+									sprite.y, 
+									sprite.w, 
+									sprite.h, 
+									camera.offset[0] + (x * tileWidth), 
+									camera.offset[1] + (y * tileHeight), 
+									tileWidth, 
+									tileHeight);
+				}
 			}
-		}
-    }
+    	}
 
-    if (z == 1) {
-			let sprite = miumiu.sprites[miumiu.direction];
-			ctx.drawImage(gametile,
-				sprite[0].x, sprite[0].y,
-				sprite[0].w, sprite[0].h,
-				camera.offset[0] + miumiu.position[0],
-				camera.offset[1] + miumiu.position[1],
-				miumiu.dimensions[0], miumiu.dimensions[1]);
-		}
+		if (z == 1) {
+				let sprite = miumiu.sprites[miumiu.direction];
+				ctx.drawImage(gametile,
+					sprite[0].x, sprite[0].y,
+					sprite[0].w, sprite[0].h,
+					camera.offset[0] + miumiu.position[0],
+					camera.offset[1] + miumiu.position[1],
+					miumiu.dimensions[0], miumiu.dimensions[1]
+							);
+					}
 	}
     
     // draw the miumiu
     let sprite = miumiu.sprites[miumiu.direction];
-	ctx.drawImage(gametile, sprite[0].x, sprite[0].y, sprite[0].w, sprite[0].h, camera.offset[0] + miumiu.position[0], camera.offset[1] + miumiu.position[1], miumiu.dimensions[0], miumiu.dimensions[1]);
+	ctx.drawImage(gametile, 
+				sprite[0].x, 
+				sprite[0].y, 
+				sprite[0].w, 
+				sprite[0].h, 
+				camera.offset[0] + miumiu.position[0], 
+				camera.offset[1] + miumiu.position[1], 
+				miumiu.dimensions[0], miumiu.dimensions[1]);
 
 	lastFrameTime = currentFrameTime;
 	requestAnimationFrame(drawGame);
