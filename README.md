@@ -30,7 +30,7 @@ Bonus:
 ## TECHNOLOGIES ###
 
 * Javascript
-* HTML
+* HTML canvas
 * CSS
 * Aseprite(for art)
 
