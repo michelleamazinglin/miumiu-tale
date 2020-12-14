@@ -29,7 +29,7 @@ let gameMap = [
 // 每个地砖多少pixel
 let tileWidth = 40;
 let tileHeight = 40;
-// 地图大小就是10*10
+// 地图大小就是20*20
 let mapWidth = 20;
 let mapHeight = 20;
 // framerate
