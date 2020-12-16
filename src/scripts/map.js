@@ -595,6 +595,7 @@ window.onload = function() {
 
 
 
+
 // main function
 function drawGame() {
     if (ctx == null) { 
