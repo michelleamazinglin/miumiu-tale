@@ -11,11 +11,10 @@ users will be able to:
 1. control miumiu to walk around the map using arrow keys
 2. not showing the whole map, but a camera following the player (player in the middle)
 3. can enter building to see what is inside
-4. add objects into map (solid ones and non solid ones)
+4. pick up objects
 
 Bonus:
-1. items on floor which miumiu can pick up
-2. bag to keep track of things miumiu pick up
+1. bag to keep track of things miumiu pick up
 
 
 ## WIREFRAME ###
