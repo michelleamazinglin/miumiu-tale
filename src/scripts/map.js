@@ -5,39 +5,44 @@ let ctx = null;
 
 // create a map with 10*10 tile
 let gameMap = [
-	0, 0, 0, 0, 0, 6, 5, 5, 7, 0, 26, 25, 25, 25, 25, 25, 27, 0, 0, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
-	0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0,
-	0, 1, 1, 1, 1, 16, 20, 16, 18, 1, 16, 18, 16, 19, 28, 18, 18, 2, 2, 0,
-	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
-	0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 31, 32, 33, 34, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 35, 36, 37, 38, 2, 2, 2, 2, 2, 2, 2, 0,
-    0, 2, 2, 2, 2, 2, 2, 2, 39, 40, 41, 42, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 16, 36, 16, 18, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 6, 5, 5, 7, 0, 26, 25, 25, 25, 25, 25, 27, 0, 0, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 21, 20, 20, 22, 1, 29, 28, 28, 28, 28, 28, 30, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 16, 20, 16, 18, 1, 16, 18, 16, 19, 28, 18, 18, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 31, 32, 33, 34, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 35, 36, 37, 38, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+    4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 39, 40, 41, 42, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 16, 36, 16, 18, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 ];
 
 // 每个地砖多少pixel
 let tileWidth = 40;
 let tileHeight = 40;
 // 地图大小就是20*20
-let mapWidth = 20;
-let mapHeight = 25;
+let mapWidth = 30;
+let mapHeight = 30;
 // framerate
 let currentSecond = 0;
 let frameCount = 0;
@@ -278,7 +283,7 @@ let miumiu = new MiuMiu();
 function MiuMiu() {
     this.tileFrom	= [1,1];
     // miumiu的位置
-    this.tileTo		= [9,11];
+    this.tileTo		= [15,16];
     // time in millseconds
     this.timeMoved	= 0;
     this.delayMove	= 700;
@@ -408,21 +413,21 @@ let camera = {
 let mapTileData = new TileMap();
 
 let buildingsLocation = [
-	{ x:5, y:0, w:4, h:5, data: [
+	{ x:11, y:5, w:4, h:5, data: [
 		10, 11, 11, 12,
         13, 14, 14, 15,
         16, 18, 16, 18,
         16, 18, 16, 18,
         16, 17, 16, 18
 	]},
-	{ x:10, y:0, w:7, h:5, data: [
+	{ x:16, y:5, w:7, h:5, data: [
 		10, 11, 11, 11, 11, 12, 12,
         13, 15, 13, 14, 14, 15, 15,
         16, 18, 16, 19, 19, 18, 18,
         16, 18, 16, 19, 19, 18, 18,
         16, 18, 16, 19, 17, 18, 18
 	]},
-	{ x:8, y:8, w:4, h:4, data: [
+	{ x:14, y:13, w:4, h:4, data: [
         10, 11, 11, 12,
         13, 14, 14, 15,
         16, 18, 16, 18,
@@ -552,44 +557,44 @@ window.onload = function() {
 	};
 	
 	// 物品摆放位置
-	let fence1 = new GameObjects(2); fence1.placeAt(9, 1);
+	let fence1 = new GameObjects(2); fence1.placeAt(15, 6);
     
-    let flower1 = new GameObjects(1); flower1.placeAt(5, 5);
-    let flower2 = new GameObjects(1); flower2.placeAt(7, 5);
-    let flower3 = new GameObjects(1); flower3.placeAt(8, 5);
+    let flower1 = new GameObjects(1); flower1.placeAt(11, 10);
+    let flower2 = new GameObjects(1); flower2.placeAt(13, 10);
+    let flower3 = new GameObjects(1); flower3.placeAt(14, 10);
     
-	let tree1 = new GameObjects(3); tree1.placeAt(4, 6);
-	let tree2 = new GameObjects(3); tree2.placeAt(9, 6);
-	let tree3 = new GameObjects(3); tree3.placeAt(7, 6);	
-    let tree4 = new GameObjects(3); tree4.placeAt(12, 6);
+	let tree1 = new GameObjects(3); tree1.placeAt(10, 11);
+	let tree2 = new GameObjects(3); tree2.placeAt(15, 11);
+	let tree3 = new GameObjects(3); tree3.placeAt(13, 11);	
+    let tree4 = new GameObjects(3); tree4.placeAt(18, 11);
   
-    let mashroom1 = new GameObjects(4); mashroom1.placeAt(2,4);
-    let mashroom2 = new GameObjects(4); mashroom2.placeAt(9,2);
+    let mashroom1 = new GameObjects(4); mashroom1.placeAt(8,9);
+    let mashroom2 = new GameObjects(4); mashroom2.placeAt(15,7);
 
-	let pigShop1 = new GameObjects(5); pigShop1.placeAt(3, 4);
+	let pigShop1 = new GameObjects(5); pigShop1.placeAt(9, 9);
 
 
-    let donuts = new GameObjects(6); donuts.placeAt(5, 0);
+    let donuts = new GameObjects(6); donuts.placeAt(11, 5);
 
-    let cooking = new GameObjects(7); cooking.placeAt(7, 0);
+    let cooking = new GameObjects(7); cooking.placeAt(13, 5);
 
-    let carpet = new GameObjects(8); carpet.placeAt(7,2);
+    let carpet = new GameObjects(8); carpet.placeAt(13,7);
 
-    let desk = new GameObjects(9); desk.placeAt(8,3);
+    let desk = new GameObjects(9); desk.placeAt(14,8);
 
-    let chair = new GameObjects(10); chair.placeAt(8,2);
-    let chair2 = new GameObjects(16); chair2.placeAt(12,2);
+    let chair = new GameObjects(10); chair.placeAt(14,7);
+    let chair2 = new GameObjects(16); chair2.placeAt(18,7);
 
-    let treePlant = new GameObjects(11); treePlant.placeAt(5,3);
+    let treePlant = new GameObjects(11); treePlant.placeAt(11,8);
 
-    let drum = new GameObjects(12); drum.placeAt(15,1);
+    let drum = new GameObjects(12); drum.placeAt(21,6);
 
-    let instruments = new GameObjects(13); instruments.placeAt(12,0);
+    let instruments = new GameObjects(13); instruments.placeAt(18,5);
 
-    let bookShelf1 = new GameObjects(14); bookShelf1.placeAt(10,1);
-    let bookShelf2 = new GameObjects(14); bookShelf2.placeAt(10,2);
+    let bookShelf1 = new GameObjects(14); bookShelf1.placeAt(16,6);
+    let bookShelf2 = new GameObjects(14); bookShelf2.placeAt(16,7);
 
-    let saxophone = new GameObjects(15); saxophone.placeAt(13,2);
+    let saxophone = new GameObjects(15); saxophone.placeAt(19,7);
 
 };
 
