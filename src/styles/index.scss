@@ -16,14 +16,25 @@ body {
 }
 
 footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
 }
 
-footer > a > img {
-    width: 20px;
-    height: auto;
-    margin-left: 10px;
-    margin-right: 10px;
+.icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons > a > img {
+  position: relative;
+  width: 30px;
+  margin: 5px;
+}
+
+#github {
+  position: relative;
+  width: 27px;
 }
