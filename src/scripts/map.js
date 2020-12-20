@@ -271,6 +271,66 @@ let itemTypes = {
 	}
 };
 
+function Stack(id, qty)
+{
+	this.type = id;
+	this.qty = qty;
+}
+
+function Inventory(s)
+{
+	this.spaces		= s;
+	this.stacks		= [];
+}
+
+Inventory.prototype.addItems = function(id, qty)
+{
+	for(let i = 0; i < this.spaces; i++)
+	{ 
+		if(this.stacks.length<=i)
+		{
+			let maxHere = (qty > itemTypes[id].maxStack ?
+				itemTypes[id].maxStack : qty);
+				this.stacks.push(new Stack(id, maxHere));
+			
+			qty-= maxHere;
+		}
+		else if(this.stacks[i].type == id &&
+			this.stacks[i].qty < itemTypes[id].maxStack)
+		{
+			let maxHere = (itemTypes[id].maxStack - this.stacks[i].qty);
+			if(maxHere > qty) { maxHere = qty; }
+			
+			this.stacks[i].qty+= maxHere;
+			qty-= maxHere;
+		}
+		if(qty==0) { return 0; }
+	}
+	return qty;
+};
+
+function PlacedItemStack(id, qty)
+{
+	this.type = id;
+	this.qty = qty;
+	this.x = 0;
+	this.y = 0;
+}
+
+PlacedItemStack.prototype.placeAt = function(nx, ny)
+{
+	if(mapTileData.map[toIndex(this.x, this.y)].itemStack==this)
+	{
+		mapTileData.map[toIndex(this.x, this.y)].itemStack = null;
+	}
+
+	this.x = nx;
+	this.y = ny;
+	
+	mapTileData.map[toIndex(nx, ny)].itemStack = this;
+};
+
+
 
 
 let gametile = null, gametileURL = "src/images/tilesetestt.png", artLoaded = false;
@@ -296,6 +356,8 @@ function MiuMiu() {
 	this.sprites[directions.right] = [{x:0,y:150,w:30,h:30}];
 	this.sprites[directions.down] = [{x:0,y:180,w:30,h:30}];
 	this.sprites[directions.left] = [{x:0,y:210,w:30,h:30}];
+	this.inventory = new Inventory(2);
+
 }
 
 
@@ -371,7 +433,32 @@ MiuMiu.prototype.goRight = function(t) { this.tileTo[0]+= 1; this.timeMoved = t;
 MiuMiu.prototype.goUp = function(t) { this.tileTo[1]-= 1; this.timeMoved = t; this.direction = directions.up; };
 MiuMiu.prototype.goDown = function(t) { this.tileTo[1]+= 1; this.timeMoved = t; this.direction = directions.down; };
 
+// pick up item
+MiuMiu.prototype.pickUp = function()
+{
+	if(this.tileTo[0]!=this.tileFrom[0] ||
+		this.tileTo[1]!=this.tileFrom[1])
+	{
+		return false;
+	}
+	
+	let is = mapTileData.map[toIndex(this.tileFrom[0],
+				this.tileFrom[1])].itemStack;
+	
+	if(is!=null)
+	{
+		let remains = this.inventory.addItems(is.type, is.qty);
 
+		if(remains) { is.qty = remains; }
+		else
+		{
+			mapTileData.map[toIndex(this.tileFrom[0],
+				this.tileFrom[1])].itemStack = null;
+		}
+	}
+	
+	return true;
+};
 
 // create a camera object
 let camera = {
@@ -446,7 +533,8 @@ function Tile(tileX, tileY, tileType)
     this.buildingType	= 0;
     //  pointer to a function to execute when a MiuMiu has completed moving on to this tile
     this.eventEnter	= null;
-    this.object		= null;
+	this.object		= null;
+	this.itemStack	= null;
 
 }
 
@@ -531,9 +619,11 @@ window.onload = function() {
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <=40 ) { heldKeys[e.keyCode] = true; }
+		if(e.keyCode==80) { keysDown[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
+		if(e.keyCode==80) { keysDown[e.keyCode] = false; }
 	});
 
     // canvas尺寸 保存到 相机
@@ -594,8 +684,11 @@ window.onload = function() {
     let bookShelf1 = new GameObjects(14); bookShelf1.placeAt(16,6);
     let bookShelf2 = new GameObjects(14); bookShelf2.placeAt(16,7);
 
-    let saxophone = new GameObjects(15); saxophone.placeAt(19,7);
-
+	let saxophone = new GameObjects(15); saxophone.placeAt(19,7);
+	
+	
+	let coconut = new PlacedItemStack(1, 1); coconut.placeAt(10, 15);
+	
 };
 
 
@@ -631,7 +724,9 @@ function drawGame() {
             miumiu.goLeft(currentFrameTime); 
         } else if(heldKeys[39] && miumiu.canGoRight()) { 
             miumiu.goRight(currentFrameTime); 
-        }
+        } else if(heldKeys[80]) {
+			miumiu.pickUp();
+		}
     }
 
     // camera跟着miumiu走
@@ -664,7 +759,22 @@ function drawGame() {
 									tileWidth, 
 									tileHeight
 								);
-                }
+				}
+				else if(z==1)
+			{
+				let is = mapTileData.map[toIndex(x,y)].itemStack;
+				if(is!=null)
+				{
+					let sprite = itemTypes[is.type].sprite;
+					
+					ctx.drawImage(gametile,
+						sprite[0].x, sprite[0].y,
+						sprite[0].w, sprite[0].h,
+						camera.offset[0] + (x*tileWidth) + itemTypes[is.type].offset[0],
+						camera.offset[1] + (y*tileHeight) + itemTypes[is.type].offset[1],
+						sprite[0].w, sprite[0].h);
+				}
+			}
 				let object = mapTileData.map[toIndex(x,y)].object;
 				if(object != null && objectTypes[object.type].zIndex == z) {
 					let objectType = objectTypes[object.type];
@@ -708,6 +818,37 @@ function drawGame() {
 							);
 					}
 	}
+
+	ctx.textAlign = "right";
+	
+	for(let i = 0; i < miumiu.inventory.spaces; i++)
+	{
+		ctx.fillStyle = "#ffc34a";
+		ctx.fillRect(10 + (i * 50), 350,
+			40, 40);
+		
+		if(typeof miumiu.inventory.stacks[i]!='undefined')
+		{
+			let it = itemTypes[miumiu.inventory.stacks[i].type];
+			let sprite = it.sprite;
+					
+			ctx.drawImage(gametile,
+				sprite[0].x, sprite[0].y,
+				sprite[0].w, sprite[0].h,
+				10 + (i * 50) + it.offset[0],
+				350 + it.offset[1],
+				sprite[0].w, sprite[0].h);
+			
+			if(miumiu.inventory.stacks[i].qty>1)
+			{
+				ctx.fillStyle = "#000000";
+				ctx.fillText("" + miumiu.inventory.stacks[i].qty,
+					10 + (i*50) + 38,
+					350 + 38);
+			}
+		}
+	}
+	ctx.textAlign = "left";
     
     // draw the miumiu
     let sprite = miumiu.sprites[miumiu.direction];
