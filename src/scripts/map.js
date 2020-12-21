@@ -59,8 +59,9 @@ let heldKeys = {
     // 39: right
     39 : false,
     // 40: down
-    40 : false
-    // 32: space
+    40 : false,
+	// 32: space
+	80 : false
 };
 
 let directions = {
@@ -287,7 +288,7 @@ Inventory.prototype.addItems = function(id, qty)
 {
 	for(let i = 0; i < this.spaces; i++)
 	{ 
-		if(this.stacks.length<=i)
+		if(this.stacks.length <= i)
 		{
 			let maxHere = (qty > itemTypes[id].maxStack ?
 				itemTypes[id].maxStack : qty);
@@ -619,11 +620,11 @@ window.onload = function() {
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <=40 ) { heldKeys[e.keyCode] = true; }
-		if(e.keyCode==80) { keysDown[e.keyCode] = true; }
+		if(e.keyCode==80) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
-		if(e.keyCode==80) { keysDown[e.keyCode] = false; }
+		if(e.keyCode==80) { heldKeys[e.keyCode] = false; }
 	});
 
     // canvas尺寸 保存到 相机
@@ -765,14 +766,14 @@ function drawGame() {
 				let is = mapTileData.map[toIndex(x,y)].itemStack;
 				if(is!=null)
 				{
-					let sprite = itemTypes[is.type].sprite;
+					let objectSprite = itemTypes[is.type].sprite;
 					
 					ctx.drawImage(gametile,
-						sprite[0].x, sprite[0].y,
-						sprite[0].w, sprite[0].h,
+						objectSprite[0].x, objectSprite[0].y,
+						objectSprite[0].w, objectSprite[0].h,
 						camera.offset[0] + (x*tileWidth) + itemTypes[is.type].offset[0],
 						camera.offset[1] + (y*tileHeight) + itemTypes[is.type].offset[1],
-						sprite[0].w, sprite[0].h);
+						objectSprite[0].w, objectSprite[0].h);
 				}
 			}
 				let object = mapTileData.map[toIndex(x,y)].object;
