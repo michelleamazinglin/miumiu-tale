@@ -24,10 +24,10 @@ let gameMap = [
 	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 16, 36, 16, 18, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
-	4, 4, 4, 4, 4, 4, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 8, 8, 8, 8, 8, 9, 8, 8, 8, 8, 8, 8, 8, 9, 8, 8, 8, 8, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 8, 8, 8, 8, 8, 8, 8, 8, 9, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 4, 4, 4, 4,
+	4, 4, 4, 4, 4, 4, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
 	4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
@@ -61,7 +61,7 @@ let heldKeys = {
     // 40: down
     40 : false,
 	// 32: space
-	80 : false
+	32 : false
 };
 
 let directions = {
@@ -82,6 +82,7 @@ let floorTypes = {
 // 数字（gameMap）对应上颜色和地板种类
 // 0:墙壁 1:草地 2:陆地  4: 水  
 // 5:黄色内部墙壁 6: 黄色内部墙壁左角 7:黄色内部墙壁右角
+// 8: 沙滩 9:沙滩2
 // 20:黄色内部地板 21:黄色内部墙左 22:黄色内部墙右
 // 25:棕色内部墙壁 26:棕色内部墙壁左角 27: 棕色内部墙壁右角
 // 28: 棕色内部地板 29: 棕色内部墙左 30:棕色内部墙右
@@ -95,7 +96,10 @@ let tileTypes = {
     5 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:0,w:40,h:40}] },
     6 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:120,y:40,w:40,h:40}] },
     7 : { color: "#d77c4b", floor: floorTypes.solid, sprite:[{x:80,y:40,w:40,h:40}] },
-    
+    8 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:200,y:0,w:40,h:40}] },
+    9 : { color: "#d77c4b", floor: floorTypes.path, sprite:[{x:200,y:40,w:40,h:40}] },
+
+	
     10 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:240,y:40,w:40,h:40}]},
     11 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:280,y:40,w:40,h:40}]},
     12 : { color:"#ccaa00", floor:floorTypes.solid, sprite:[{x:320,y:40,w:40,h:40}]},
@@ -620,11 +624,11 @@ window.onload = function() {
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <=40 ) { heldKeys[e.keyCode] = true; }
-		if(e.keyCode==80) { heldKeys[e.keyCode] = true; }
+		if(e.keyCode==32) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
-		if(e.keyCode==80) { heldKeys[e.keyCode] = false; }
+		if(e.keyCode==32) { heldKeys[e.keyCode] = false; }
 	});
 
     // canvas尺寸 保存到 相机
@@ -688,7 +692,11 @@ window.onload = function() {
 	let saxophone = new GameObjects(15); saxophone.placeAt(19,7);
 	
 	
-	let coconut = new PlacedItemStack(1, 1); coconut.placeAt(10, 15);
+	let coconut1 = new PlacedItemStack(1, 1); coconut1.placeAt(10, 20);
+	let coconut2 = new PlacedItemStack(1, 1); coconut2.placeAt(15, 21);
+	let coconut3 = new PlacedItemStack(1, 1); coconut3.placeAt(13, 20);
+
+	let strawberry1 = new PlacedItemStack(2, 1); strawberry1.placeAt(18, 21);
 	
 };
 
@@ -725,7 +733,7 @@ function drawGame() {
             miumiu.goLeft(currentFrameTime); 
         } else if(heldKeys[39] && miumiu.canGoRight()) { 
             miumiu.goRight(currentFrameTime); 
-        } else if(heldKeys[80]) {
+        } else if(heldKeys[32]) {
 			miumiu.pickUp();
 		}
     }
