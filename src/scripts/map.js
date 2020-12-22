@@ -256,6 +256,13 @@ let objectTypes = {
 		offset : [0,0],
 		collision : collisions.solid,
 		zIndex : 1
+	},
+	17 : {
+		name : "coconut tree",
+		sprite : [{x:440,y:0,w:80,h:80}],
+		offset : [-20,-20],
+		collision : collisions.solid,
+		zIndex : 1
     },
 };
 
@@ -691,12 +698,18 @@ window.onload = function() {
 
 	let saxophone = new GameObjects(15); saxophone.placeAt(19,7);
 	
-	
-	let coconut1 = new PlacedItemStack(1, 1); coconut1.placeAt(10, 20);
-	let coconut2 = new PlacedItemStack(1, 1); coconut2.placeAt(15, 21);
-	let coconut3 = new PlacedItemStack(1, 1); coconut3.placeAt(13, 20);
+	let coconutTree1 = new GameObjects(17); coconutTree1.placeAt(10, 18);
+	let coconutTree2 = new GameObjects(17); coconutTree2.placeAt(14, 19);
+	let coconutTree3 = new GameObjects(17); coconutTree3.placeAt(18, 18);
+	let coconutTree4 = new GameObjects(17); coconutTree4.placeAt(22, 19);
 
-	let strawberry1 = new PlacedItemStack(2, 1); strawberry1.placeAt(18, 21);
+
+	let coconut1 = new PlacedItemStack(1, 1); coconut1.placeAt(10, 20);
+	let coconut2 = new PlacedItemStack(1, 1); coconut2.placeAt(15, 20);
+	let coconut3 = new PlacedItemStack(1, 1); coconut3.placeAt(23, 20);
+	let coconut4 = new PlacedItemStack(1, 1); coconut4.placeAt(14, 21);
+
+	let strawberry1 = new PlacedItemStack(2, 1); strawberry1.placeAt(18, 22);
 	
 };
 
