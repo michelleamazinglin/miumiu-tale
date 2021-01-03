@@ -3,7 +3,7 @@
 
 ## BACKGROUND ###
 
-MiuMiu Tale take place in a fantasy world where MiuMiu lives.
+MiuMiu Tale take place in a fantasy world where MiuMiu lives. Users can move around the map using arrow key, and use space key to pick up items on the map.
 
 ## FUNCTIONALITY AND MVP ###
 
