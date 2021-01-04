@@ -31,7 +31,7 @@ Bonus:
 * Javascript
 * HTML canvas
 * CSS
-* Aseprite(for art)
+* Aseprite(for game art)
 
 ## TIMELINE ###
 
@@ -48,3 +48,7 @@ Bonus:
 **DAY 4**
 > * rendering houses
 > * character can walk into houses
+
+**DAY 5**
+> * rendering pick up items on map
+> * user can pick up items using space key
