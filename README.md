@@ -5,6 +5,11 @@
 
 MiuMiu Tale take place in a fantasy world where MiuMiu lives. Users can move around the map using arrow key, and use space key to pick up items on the map.
 
+## INSTRUCTION ###
+
+use arrow key to move around the map, and use space key to pick up items
+
+
 ## FUNCTIONALITY AND MVP ###
 
 users will be able to:
