@@ -53,13 +53,13 @@ let lastFrameTime = 0;
 // keyCode : boolean to tell us which one are pressed
 let heldKeys = {
     // 37: left
-    37 : false,
+    65 : false,
     // 38: up
-    38 : false,
+    87 : false,
     // 39: right
-    39 : false,
+    68 : false,
     // 40: down
-    40 : false,
+    83 : false,
 	// 32: space
 	32 : false
 };
@@ -630,11 +630,11 @@ window.onload = function() {
     
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
-		if(e.keyCode >= 37 && e.keyCode <=40 ) { heldKeys[e.keyCode] = true; }
+		if(e.keyCode >= 65 && e.keyCode <= 87 ) { heldKeys[e.keyCode] = true; }
 		if(e.keyCode==32) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
-		if(e.keyCode >= 37 && e.keyCode <= 40) { heldKeys[e.keyCode] = false; }
+		if(e.keyCode >= 65 && e.keyCode <= 87) { heldKeys[e.keyCode] = false; }
 		if(e.keyCode==32) { heldKeys[e.keyCode] = false; }
 	});
 
@@ -738,13 +738,13 @@ function drawGame() {
 
     // miumiu movement
 	if(!miumiu.processMovement(currentFrameTime)) {
-		if(heldKeys[38] && miumiu.canGoUp()){ 
+		if(heldKeys[87] && miumiu.canGoUp()){ 
             miumiu.goUp(currentFrameTime); 
-        } else if (heldKeys[40] && miumiu.canGoDown()) { 
+        } else if (heldKeys[83] && miumiu.canGoDown()) { 
             miumiu.goDown(currentFrameTime); 
-        } else if(heldKeys[37] && miumiu.canGoLeft()) { 
+        } else if(heldKeys[65] && miumiu.canGoLeft()) { 
             miumiu.goLeft(currentFrameTime); 
-        } else if(heldKeys[39] && miumiu.canGoRight()) { 
+        } else if(heldKeys[68] && miumiu.canGoRight()) { 
             miumiu.goRight(currentFrameTime); 
         } else if(heldKeys[32]) {
 			miumiu.pickUp();
