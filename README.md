@@ -3,7 +3,12 @@
 
 ## BACKGROUND ###
 
-MiuMiu Tale take place in a fantasy world where MiuMiu lives.
+MiuMiu Tale take place in a fantasy world where MiuMiu lives. Users can move around the map using arrow key, and use space key to pick up items on the map.
+
+## INSTRUCTION ###
+
+use arrow key to move around the map, and use space key to pick up items
+
 
 ## FUNCTIONALITY AND MVP ###
 
@@ -31,7 +36,7 @@ Bonus:
 * Javascript
 * HTML canvas
 * CSS
-* Aseprite(for art)
+* Aseprite(for game art)
 
 ## TIMELINE ###
 
@@ -48,3 +53,7 @@ Bonus:
 **DAY 4**
 > * rendering houses
 > * character can walk into houses
+
+**DAY 5**
+> * rendering pick up items on map
+> * user can pick up items using space key
