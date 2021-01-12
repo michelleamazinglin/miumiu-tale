@@ -61,7 +61,7 @@ let heldKeys = {
     // 40: down
     83 : false,
 	// 32: space
-	32 : false
+	80 : false
 };
 
 let directions = {
@@ -631,11 +631,11 @@ window.onload = function() {
     // add eventListeners for the keydowna and keyup
 	window.addEventListener("keydown", function(e) {
 		if(e.keyCode >= 65 && e.keyCode <= 87 ) { heldKeys[e.keyCode] = true; }
-		if(e.keyCode==32) { heldKeys[e.keyCode] = true; }
+		if(e.keyCode==80) { heldKeys[e.keyCode] = true; }
 	});
 	window.addEventListener("keyup", function(e) {
 		if(e.keyCode >= 65 && e.keyCode <= 87) { heldKeys[e.keyCode] = false; }
-		if(e.keyCode==32) { heldKeys[e.keyCode] = false; }
+		if(e.keyCode==80) { heldKeys[e.keyCode] = false; }
 	});
 
     // canvas尺寸 保存到 相机
@@ -746,7 +746,7 @@ function drawGame() {
             miumiu.goLeft(currentFrameTime); 
         } else if(heldKeys[68] && miumiu.canGoRight()) { 
             miumiu.goRight(currentFrameTime); 
-        } else if(heldKeys[32]) {
+        } else if(heldKeys[80]) {
 			miumiu.pickUp();
 		}
     }
