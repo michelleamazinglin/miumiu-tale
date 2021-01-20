@@ -1,35 +1,5 @@
 @import url(https://fonts.googleapis.com/css2?family=Montserrat+Alternates&display=swap);
-canvas {
-  border: 10px solid #CEFF99;
-  border-radius: 10px; }
-
-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Montserrat Alternates', sans-serif;
-  background-color: #cbe2ac; }
-
-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; }
-
-.icons {
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
-.icons > a > img {
-  position: relative;
-  width: 30px;
-  margin: 5px; }
-
-#github {
-  position: relative;
-  width: 27px; }
+canvas{border:10px solid #CEFF99;border-radius:10px}body{display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Montserrat Alternates', sans-serif;background-color:#cbe2ac}footer{display:flex;flex-direction:column;justify-content:center;align-items:center}.icons{display:flex;justify-content:center;align-items:center}.icons>a>img{position:relative;width:30px;margin:5px}#github{position:relative;width:27px}
 
 
-/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9zcmMvc3R5bGVzL2luZGV4LnNjc3MgKDEpIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQTtBQUNBO0FBQ0Esc0JBQXNCOztBQUV0QjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSw0QkFBNEI7O0FBRTVCO0FBQ0E7QUFDQTtBQUNBO0FBQ0Esc0JBQXNCOztBQUV0QjtBQUNBO0FBQ0E7QUFDQSxzQkFBc0I7O0FBRXRCO0FBQ0E7QUFDQTtBQUNBLGNBQWM7O0FBRWQ7QUFDQTtBQUNBLGNBQWMiLCJmaWxlIjoibWFpbi5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJjYW52YXMge1xuICBib3JkZXI6IDEwcHggc29saWQgI0NFRkY5OTtcbiAgYm9yZGVyLXJhZGl1czogMTBweDsgfVxuXG5ib2R5IHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7XG4gIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gIGZvbnQtZmFtaWx5OiAnTW9udHNlcnJhdCBBbHRlcm5hdGVzJywgc2Fucy1zZXJpZjtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2NiZTJhYzsgfVxuXG5mb290ZXIge1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbGV4LWRpcmVjdGlvbjogY29sdW1uO1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjsgfVxuXG4uaWNvbnMge1xuICBkaXNwbGF5OiBmbGV4O1xuICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjtcbiAgYWxpZ24taXRlbXM6IGNlbnRlcjsgfVxuXG4uaWNvbnMgPiBhID4gaW1nIHtcbiAgcG9zaXRpb246IHJlbGF0aXZlO1xuICB3aWR0aDogMzBweDtcbiAgbWFyZ2luOiA1cHg7IH1cblxuI2dpdGh1YiB7XG4gIHBvc2l0aW9uOiByZWxhdGl2ZTtcbiAgd2lkdGg6IDI3cHg7IH1cbiJdLCJzb3VyY2VSb290IjoiIn0=*/
+/*# sourceMappingURL=main.css.map*/
