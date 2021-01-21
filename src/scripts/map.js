@@ -313,13 +313,14 @@ Inventory.prototype.addItems = function(id, qty)
 			let maxHere = (itemTypes[id].maxStack - this.stacks[i].qty);
 			if(maxHere > qty) { maxHere = qty; }
 			
-			this.stacks[i].qty+= maxHere;
-			qty-= maxHere;
+			this.stacks[i].qty += maxHere;
+			qty -= maxHere;
 		}
-		if(qty==0) { return 0; }
+		if( qty == 0 ) { return 0; }
 	}
 	return qty;
 };
+
 
 function PlacedItemStack(id, qty)
 {
@@ -849,7 +850,7 @@ function drawGame() {
 		ctx.fillRect(10 + (i * 50), 350,
 			40, 40);
 		
-		if(typeof miumiu.inventory.stacks[i]!='undefined'){
+		if(typeof miumiu.inventory.stacks[i] != 'undefined'){
 			let it = itemTypes[miumiu.inventory.stacks[i].type];
 			let sprite = it.sprite;
 					
@@ -867,6 +868,11 @@ function drawGame() {
 					10 + (i * 50) + 38,
 					350 + 38
 					);
+			}
+			if (miumiu.inventory.stacks[i].qty == 4) {
+				alert("YOU FOUND ALL COCONUTS");
+				document.location.reload();
+				clearInterval(interval);
 			}
 		}
 	}
