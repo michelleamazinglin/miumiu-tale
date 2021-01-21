@@ -18,6 +18,7 @@ canvas {
 .canvas > h1 {
   font-size: 25px;
   margin: 10px;
+  color: black;
 }
 
 body {
@@ -27,6 +28,7 @@ body {
     align-items: center;
     font-family: 'Montserrat Alternates', sans-serif;
     background-color: #cbe2ac; 
+    color: #666666;
 }
 
 footer {
@@ -35,6 +37,7 @@ footer {
   justify-content: center;
   align-items: center; 
   font-size: 12px;
+  width: 100vw;
 }
 
 .icons {
