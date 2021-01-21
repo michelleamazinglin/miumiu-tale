@@ -843,15 +843,13 @@ function drawGame() {
 	}
 
 	ctx.textAlign = "right";
-	
-	for(let i = 0; i < miumiu.inventory.spaces; i++)
-	{
+	// inventory
+	for(let i = 0; i < miumiu.inventory.spaces; i++){
 		ctx.fillStyle = "#ffc34a";
 		ctx.fillRect(10 + (i * 50), 350,
 			40, 40);
 		
-		if(typeof miumiu.inventory.stacks[i]!='undefined')
-		{
+		if(typeof miumiu.inventory.stacks[i]!='undefined'){
 			let it = itemTypes[miumiu.inventory.stacks[i].type];
 			let sprite = it.sprite;
 					
@@ -862,12 +860,13 @@ function drawGame() {
 				350 + it.offset[1],
 				sprite[0].w, sprite[0].h);
 			
-			if(miumiu.inventory.stacks[i].qty>1)
-			{
+			if(miumiu.inventory.stacks[i].qty > 1){
 				ctx.fillStyle = "#000000";
-				ctx.fillText("" + miumiu.inventory.stacks[i].qty,
-					10 + (i*50) + 38,
-					350 + 38);
+				ctx.fillText(
+					"" + miumiu.inventory.stacks[i].qty,
+					10 + (i * 50) + 38,
+					350 + 38
+					);
 			}
 		}
 	}
