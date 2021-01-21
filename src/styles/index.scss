@@ -15,10 +15,15 @@ canvas {
   background-size: cover;
 }
 
-.canvas > h1 {
+.title > h1 {
   font-size: 25px;
   margin: 10px;
   color: black;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
 }
 
 body {
@@ -58,15 +63,18 @@ footer {
 }
 
 .restart {
-  font-size: large;
+  font-size: 16px;
   border: none;
   margin-top: 10px;
   background-color: transparent;
   font-family: 'Montserrat Alternates', sans-serif;
   cursor: pointer;
+  justify-content: center;
 }
 
 .instruction{
   width: 500px;
   font-size: 12px;
+  display: flex;
+  flex-direction: column;
 }
