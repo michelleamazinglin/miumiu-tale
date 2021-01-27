@@ -19,10 +19,14 @@ users will be able to:
 2. not showing the whole map, but a camera following the player (player in the middle)
 3. can enter building to see what is inside
 4. pick up objects
+
+
 ![miumiu](src/images/miumiu.gif)
 
 Bonus:
 1. bag to keep track of things miumiu pick up
+
+
 ![bag](src/images/bag.png)
 2. Alert when find all coconut on the map
 ![alert](src/images/al.png)
