@@ -4,10 +4,12 @@
 ## BACKGROUND ###
 
 MiuMiu Tale take place in a fantasy world where MiuMiu lives. Users can move around the map using arrow key, and use space key to pick up items on the map. MiuMiu's favorite food is COCONUT, so if user pick up all coconuts in the world, you win.
+![miumiu](src/images/screenshot.png)
+
 
 ## INSTRUCTION ###
 
-use AWSD key to move around the map, and use ENTER key to pick up items
+use AWSD key to move around the map, and use ENTER key to pick up items. (try to find all coconuts on the map)
 
 
 ## FUNCTIONALITY AND MVP ###
@@ -17,11 +19,13 @@ users will be able to:
 2. not showing the whole map, but a camera following the player (player in the middle)
 3. can enter building to see what is inside
 4. pick up objects
+![miumiu](src/images/miumiu.gif)
 
 Bonus:
 1. bag to keep track of things miumiu pick up
+![bag](src/images/bag.png)
 2. Alert when find all coconut on the map
-
+![alert](src/images/al.png)
 
 ## WIREFRAME ###
 
