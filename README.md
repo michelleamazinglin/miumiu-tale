@@ -28,7 +28,11 @@ Bonus:
 
 
 ![bag](src/images/bag.png)
+
+
 2. Alert when find all coconut on the map
+
+
 ![alert](src/images/al.png)
 
 ## WIREFRAME ###
